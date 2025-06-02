@@ -2,11 +2,13 @@
 
 package com.mycompany.cartaodecredito;
 
+import Connect.ConnectFactory;
+
 public class CartaoDeCredito {
 
     public static void main(String[] args) {
         try{
-            ConnectFactory a = new ConnectFactory();
+            ConnectFactory a = new ConnectFactory(); //Conectando o Mysql 
             a.getConnection();
             System.out.println("Conexao estabelecida com sucesso!");
         } catch (Exception e){
