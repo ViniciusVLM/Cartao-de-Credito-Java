@@ -16,7 +16,7 @@ public class DenunciaDao {
         this.con = new ConnectFactory().getConnection();
     }
 
-    //Cadastrar uma nova denúncia
+    //Cadastrar uma nova Denúncia
     public void cadastrarDenuncia(Denuncia d) {
         String sql = "INSERT INTO Denuncia (Id_Compra, Id_Cliente, Data_Denuncia, Motivo) VALUES (?, ?, ?, ?)";
 
@@ -33,7 +33,7 @@ public class DenunciaDao {
         }
     }
 
-    //Atualizar o status da denúncia
+    //Atualizar o status da Denúncia
     
 }
 
