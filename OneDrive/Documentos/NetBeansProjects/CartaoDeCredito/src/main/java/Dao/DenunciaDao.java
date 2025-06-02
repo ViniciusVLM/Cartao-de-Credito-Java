@@ -34,19 +34,6 @@ public class DenunciaDao {
     }
 
     //Atualizar o status da denúncia
-public void atualizarStatus(int idDenuncia, String novoStatus) {
-    String sql = "UPDATE Denuncia SET Status = ? WHERE Id_Denuncia = ?";
-
-    try (PreparedStatement ps = con.prepareStatement(sql)) {
-        ps.setString(1, novoStatus);
-        ps.setInt(2, idDenuncia);
-
-        ps.executeUpdate();
-
-        JOptionPane.showMessageDialog(null, "Status da denúncia atualizado com sucesso!");
-    } catch (SQLException e) {
-        JOptionPane.showMessageDialog(null, "Erro ao atualizar status: " + e.getMessage());
-    }
-}
+    
 }
 
