@@ -12,7 +12,7 @@ public class CartaoDeCredito {
             a.getConnection();
             System.out.println("Conexao estabelecida com sucesso!");
         } catch (Exception e){
-            System.out.println("Não foi possível estabelecer a conexão.");
+            System.out.println("Não foi possível estabelecer a conexão." + e.getMessage());
             
         }
 
