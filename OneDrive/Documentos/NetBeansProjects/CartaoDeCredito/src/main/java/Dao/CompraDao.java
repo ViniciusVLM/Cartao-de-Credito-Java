@@ -7,6 +7,7 @@ import Model.Compras;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import javax.swing.JOptionPane;
 
 public class CompraDao {
@@ -22,7 +23,8 @@ public class CompraDao {
 
         try (PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, c.getIdCartao());
-            ps.setDate(2, java.sql.Date.valueOf(c.getTransacao()));
+            LocalDate data = c.getTransacao();
+            ps.setDate(2, java.sql.Date.valueOf(data));
             ps.setDouble(3, c.getValorCompra());
             ps.setString(4, c.getEstabelecimento());
             ps.setString(5, c.getDescricao());

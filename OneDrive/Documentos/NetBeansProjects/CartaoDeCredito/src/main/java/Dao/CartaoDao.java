@@ -7,6 +7,7 @@ import Model.Cartao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import javax.swing.JOptionPane;
 
 public class CartaoDao {
@@ -23,7 +24,8 @@ public class CartaoDao {
         try (PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, c.getIdCliente());
             ps.setString(2, c.getNumerosCartao());
-            ps.setDate(3, java.sql.Date.valueOf(c.getValidade()));
+            LocalDate data = c.getValidade();
+            ps.setDate(3, java.sql.Date.valueOf(data));
             
             ps.execute();
             

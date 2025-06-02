@@ -7,6 +7,7 @@ import Model.Denuncia;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import javax.swing.JOptionPane;
 
 public class DenunciaDao {
@@ -23,7 +24,8 @@ public class DenunciaDao {
         try (PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, d.getIdCompra());
             ps.setInt(2, d.getIdCliente());
-            ps.setDate(3, java.sql.Date.valueOf(d.getDataDenuncia()));
+            LocalDate data = d.getDataDenuncia();
+            ps.setDate(3, java.sql.Date.valueOf(data));
             ps.setString(4, d.getMotivo());
 
             ps.execute();
@@ -34,6 +36,7 @@ public class DenunciaDao {
     }
 
     //Atualizar o status da Denúncia
+    
     
 }
 
