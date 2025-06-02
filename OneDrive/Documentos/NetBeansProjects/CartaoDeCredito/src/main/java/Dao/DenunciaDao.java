@@ -34,8 +34,6 @@ public class DenunciaDao {
             JOptionPane.showMessageDialog(null, "Erro ao registrar denúncia: " + e.getMessage());
         }
     }
-
-    //Atualizar o status da Denúncia
     
     
 }
