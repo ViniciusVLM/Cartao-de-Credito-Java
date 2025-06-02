@@ -5,6 +5,14 @@ package com.mycompany.cartaodecredito;
 public class CartaoDeCredito {
 
     public static void main(String[] args) {
+        try{
+            ConnectFactory a = new ConnectFactory();
+            a.getConnection();
+            System.out.println("Conexao estabelecida com sucesso!");
+        } catch (Exception e){
+            System.out.println("Não foi possível estabelecer a conexão.");
+            
+        }
 
 
             Usuario admin = new Usuario("Admin", "000.000.000-00", "admin123", true);
