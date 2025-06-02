@@ -11,7 +11,7 @@ public class ConnectFactory {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             return DriverManager.getConnection(
-                "jdbc:mysql://localhost:3306/conexaosql", "usuario", "senha");
+                "jdbc:mysql://localhost:3306/cloud", "Admin", "Admin008890");
         } catch (ClassNotFoundException e) {
             JOptionPane.showMessageDialog(null, "Driver JDBC não encontrado: " + e.getMessage());
             return null;
