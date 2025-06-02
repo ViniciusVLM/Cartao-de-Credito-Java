@@ -13,6 +13,7 @@ public class CartaoCredito {
             this.limite = limite;
             this.saldoDisponivel = limite;
             this.ativo = true;
+            System.out.println("cu");
         }
 
         public String getNumero() {
