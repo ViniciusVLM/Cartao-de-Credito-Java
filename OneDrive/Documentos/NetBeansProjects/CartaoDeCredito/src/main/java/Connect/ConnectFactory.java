@@ -9,6 +9,7 @@ import javax.swing.JOptionPane;
 public class ConnectFactory {
     public Connection getConnection() {
         try {
+            System.out.println("Chupa Palmeiras");
             Class.forName("com.mysql.cj.jdbc.Driver"); 
             return DriverManager.getConnection(
                 "jdbc:mysql://localhost:3306/cloud", "Admin", "Admin008890"); // Conectando o Banco de dados
