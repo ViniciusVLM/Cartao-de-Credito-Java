@@ -1,5 +1,4 @@
-
-package Model;
+package com.mycompany.cartaodecredito;
 import Model.Compras;
 import java.util.ArrayList;
 import java.util.List;
