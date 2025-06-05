@@ -17,7 +17,7 @@ public class Historico {
             return;
         }
         for (Compras compra : compras) {
-            System.out.printf("[%s] %s - R$%.2f em %s (ID Cartão: %d)\n",
+            System.out.printf("[%s] %s - R$%.2f em %s (ID Cartão: %d)",
                     compra.getTransacao(),
                     compra.getDescricao(),
                     compra.getValorCompra(),
@@ -33,10 +33,10 @@ public class Historico {
             .collect(Collectors.toList());
 
         if (filtradas.isEmpty()) {
-            System.out.printf("Nenhuma compra encontrada para %02d/%d\n", mes, ano);
+            System.out.printf("Nenhuma compra encontrada para %02d/%d", mes, ano);
         } else {
             for (Compras compra : filtradas) {
-                System.out.printf("[%s] %s - R$%.2f em %s (ID Cartão: %d)\n",
+                System.out.printf("[%s] %s - R$%.2f em %s (ID Cartão: %d)",
                         compra.getTransacao(),
                         compra.getDescricao(),
                         compra.getValorCompra(),
@@ -53,10 +53,10 @@ public class Historico {
             .collect(Collectors.toList());
 
         if (filtradas.isEmpty()) {
-            System.out.printf("Nenhuma compra encontrada para o cartão com ID %d\n", idCartao);
+            System.out.printf("Nenhuma compra encontrada para o cartão com ID %d", idCartao);
         } else {
             for (Compras compra : filtradas) {
-                System.out.printf("[%s] %s - R$%.2f em %s\n",
+                System.out.printf("[%s] %s - R$%.2f em %s",
                         compra.getTransacao(),
                         compra.getDescricao(),
                         compra.getValorCompra(),
