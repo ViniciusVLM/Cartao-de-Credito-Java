@@ -30,27 +30,28 @@ public class TelaCadastro extends javax.swing.JFrame {
         venhaParaAVaultBank = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         painelTelaCadastro = new javax.swing.JPanel();
-        nomeCadastro = new javax.swing.JLabel();
-        nomeTXT = new javax.swing.JTextField();
-        labelCadstro = new javax.swing.JLabel();
-        rGTXT = new javax.swing.JTextField();
-        labelCpf = new javax.swing.JLabel();
-        cpfText = new javax.swing.JTextField();
-        labelCpf1 = new javax.swing.JLabel();
-        labelCpf2 = new javax.swing.JLabel();
-        cpfText1 = new javax.swing.JTextField();
-        labelCpf3 = new javax.swing.JLabel();
-        cpfText2 = new javax.swing.JTextField();
-        labelCpf4 = new javax.swing.JLabel();
+        lblDadosPessoais = new javax.swing.JLabel();
+        txtNome = new javax.swing.JTextField();
+        lblCadstro = new javax.swing.JLabel();
+        txtRg = new javax.swing.JTextField();
+        lblCpf = new javax.swing.JLabel();
+        txtCpf = new javax.swing.JTextField();
+        lblRg = new javax.swing.JLabel();
+        lblNacionalidade = new javax.swing.JLabel();
+        txtNascimento = new javax.swing.JTextField();
+        nascimentoLabel = new javax.swing.JLabel();
+        nacionalidadeText = new javax.swing.JTextField();
+        emailLabel = new javax.swing.JLabel();
         nomeCadastro1 = new javax.swing.JLabel();
         nomeCadastro2 = new javax.swing.JLabel();
-        cpfText3 = new javax.swing.JTextField();
-        labelCpf5 = new javax.swing.JLabel();
-        cpfText4 = new javax.swing.JTextField();
+        emailText = new javax.swing.JTextField();
+        estadoLabel = new javax.swing.JLabel();
+        estadoText = new javax.swing.JTextField();
         labelCpf6 = new javax.swing.JLabel();
         telefoneText = new javax.swing.JTextField();
         cepLabel = new javax.swing.JLabel();
         cepText = new javax.swing.JTextField();
+        cadastrarButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -82,73 +83,73 @@ public class TelaCadastro extends javax.swing.JFrame {
         painelTelaCadastro.setBackground(new java.awt.Color(242, 206, 22));
         painelTelaCadastro.setForeground(new java.awt.Color(242, 206, 22));
 
-        nomeCadastro.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        nomeCadastro.setForeground(new java.awt.Color(0, 0, 0));
-        nomeCadastro.setText("Dados Pessoais");
+        lblDadosPessoais.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        lblDadosPessoais.setForeground(new java.awt.Color(0, 0, 0));
+        lblDadosPessoais.setText("Dados Pessoais");
 
-        nomeTXT.setBackground(new java.awt.Color(115, 185, 221));
-        nomeTXT.setForeground(new java.awt.Color(255, 255, 255));
-        nomeTXT.addActionListener(new java.awt.event.ActionListener() {
+        txtNome.setBackground(new java.awt.Color(115, 185, 221));
+        txtNome.setForeground(new java.awt.Color(255, 255, 255));
+        txtNome.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                nomeTXTActionPerformed(evt);
+                txtNomeActionPerformed(evt);
             }
         });
 
-        labelCadstro.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-        labelCadstro.setForeground(new java.awt.Color(255, 255, 255));
-        labelCadstro.setText("Cadastro");
+        lblCadstro.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        lblCadstro.setForeground(new java.awt.Color(255, 255, 255));
+        lblCadstro.setText("Cadastro");
 
-        rGTXT.setBackground(new java.awt.Color(115, 185, 221));
-        rGTXT.setForeground(new java.awt.Color(255, 255, 255));
-        rGTXT.addActionListener(new java.awt.event.ActionListener() {
+        txtRg.setBackground(new java.awt.Color(115, 185, 221));
+        txtRg.setForeground(new java.awt.Color(255, 255, 255));
+        txtRg.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                rGTXTActionPerformed(evt);
+                txtRgActionPerformed(evt);
             }
         });
 
-        labelCpf.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        labelCpf.setForeground(new java.awt.Color(255, 255, 255));
-        labelCpf.setText("CPF:");
+        lblCpf.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblCpf.setForeground(new java.awt.Color(255, 255, 255));
+        lblCpf.setText("CPF:");
 
-        cpfText.setBackground(new java.awt.Color(115, 185, 221));
-        cpfText.setForeground(new java.awt.Color(255, 255, 255));
-        cpfText.addActionListener(new java.awt.event.ActionListener() {
+        txtCpf.setBackground(new java.awt.Color(115, 185, 221));
+        txtCpf.setForeground(new java.awt.Color(255, 255, 255));
+        txtCpf.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cpfTextActionPerformed(evt);
+                txtCpfActionPerformed(evt);
             }
         });
 
-        labelCpf1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        labelCpf1.setForeground(new java.awt.Color(255, 255, 255));
-        labelCpf1.setText("RG:");
+        lblRg.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblRg.setForeground(new java.awt.Color(255, 255, 255));
+        lblRg.setText("RG:");
 
-        labelCpf2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        labelCpf2.setForeground(new java.awt.Color(255, 255, 255));
-        labelCpf2.setText("Nacionalidade:");
+        lblNacionalidade.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblNacionalidade.setForeground(new java.awt.Color(255, 255, 255));
+        lblNacionalidade.setText("Nacionalidade:");
 
-        cpfText1.setBackground(new java.awt.Color(115, 185, 221));
-        cpfText1.setForeground(new java.awt.Color(255, 255, 255));
-        cpfText1.addActionListener(new java.awt.event.ActionListener() {
+        txtNascimento.setBackground(new java.awt.Color(115, 185, 221));
+        txtNascimento.setForeground(new java.awt.Color(255, 255, 255));
+        txtNascimento.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cpfText1ActionPerformed(evt);
+                txtNascimentoActionPerformed(evt);
             }
         });
 
-        labelCpf3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        labelCpf3.setForeground(new java.awt.Color(255, 255, 255));
-        labelCpf3.setText("Data de nascimento:");
+        nascimentoLabel.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        nascimentoLabel.setForeground(new java.awt.Color(255, 255, 255));
+        nascimentoLabel.setText("Data de nascimento:");
 
-        cpfText2.setBackground(new java.awt.Color(115, 185, 221));
-        cpfText2.setForeground(new java.awt.Color(255, 255, 255));
-        cpfText2.addActionListener(new java.awt.event.ActionListener() {
+        nacionalidadeText.setBackground(new java.awt.Color(115, 185, 221));
+        nacionalidadeText.setForeground(new java.awt.Color(255, 255, 255));
+        nacionalidadeText.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cpfText2ActionPerformed(evt);
+                nacionalidadeTextActionPerformed(evt);
             }
         });
 
-        labelCpf4.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        labelCpf4.setForeground(new java.awt.Color(255, 255, 255));
-        labelCpf4.setText("Email:");
+        emailLabel.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        emailLabel.setForeground(new java.awt.Color(255, 255, 255));
+        emailLabel.setText("Email:");
 
         nomeCadastro1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         nomeCadastro1.setForeground(new java.awt.Color(255, 255, 255));
@@ -158,23 +159,23 @@ public class TelaCadastro extends javax.swing.JFrame {
         nomeCadastro2.setForeground(new java.awt.Color(0, 0, 0));
         nomeCadastro2.setText("Contato");
 
-        cpfText3.setBackground(new java.awt.Color(115, 185, 221));
-        cpfText3.setForeground(new java.awt.Color(255, 255, 255));
-        cpfText3.addActionListener(new java.awt.event.ActionListener() {
+        emailText.setBackground(new java.awt.Color(115, 185, 221));
+        emailText.setForeground(new java.awt.Color(255, 255, 255));
+        emailText.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cpfText3ActionPerformed(evt);
+                emailTextActionPerformed(evt);
             }
         });
 
-        labelCpf5.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        labelCpf5.setForeground(new java.awt.Color(255, 255, 255));
-        labelCpf5.setText("Estado:");
+        estadoLabel.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        estadoLabel.setForeground(new java.awt.Color(255, 255, 255));
+        estadoLabel.setText("Estado:");
 
-        cpfText4.setBackground(new java.awt.Color(115, 185, 221));
-        cpfText4.setForeground(new java.awt.Color(255, 255, 255));
-        cpfText4.addActionListener(new java.awt.event.ActionListener() {
+        estadoText.setBackground(new java.awt.Color(115, 185, 221));
+        estadoText.setForeground(new java.awt.Color(255, 255, 255));
+        estadoText.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cpfText4ActionPerformed(evt);
+                estadoTextActionPerformed(evt);
             }
         });
 
@@ -202,6 +203,14 @@ public class TelaCadastro extends javax.swing.JFrame {
             }
         });
 
+        cadastrarButton.setBackground(new java.awt.Color(2, 72, 115));
+        cadastrarButton.setText("Cadastrar");
+        cadastrarButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cadastrarButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout painelTelaCadastroLayout = new javax.swing.GroupLayout(painelTelaCadastro);
         painelTelaCadastro.setLayout(painelTelaCadastroLayout);
         painelTelaCadastroLayout.setHorizontalGroup(
@@ -210,89 +219,93 @@ public class TelaCadastro extends javax.swing.JFrame {
                 .addGroup(painelTelaCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(painelTelaCadastroLayout.createSequentialGroup()
                         .addGap(259, 259, 259)
-                        .addComponent(labelCadstro))
+                        .addComponent(lblCadstro))
                     .addGroup(painelTelaCadastroLayout.createSequentialGroup()
                         .addGap(41, 41, 41)
-                        .addGroup(painelTelaCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(painelTelaCadastroLayout.createSequentialGroup()
-                                .addComponent(labelCpf2)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(cpfText2, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(labelCpf3)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(cpfText1, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(painelTelaCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(painelTelaCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(cadastrarButton, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(painelTelaCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addGroup(painelTelaCadastroLayout.createSequentialGroup()
-                                    .addComponent(nomeCadastro1)
+                                    .addComponent(lblNacionalidade)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(nacionalidadeText, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(nascimentoLabel)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(txtNascimento, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(painelTelaCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addGroup(painelTelaCadastroLayout.createSequentialGroup()
+                                        .addComponent(nomeCadastro1)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(txtNome, javax.swing.GroupLayout.PREFERRED_SIZE, 373, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(painelTelaCadastroLayout.createSequentialGroup()
+                                        .addComponent(lblCpf)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(txtCpf, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(37, 37, 37)
+                                        .addComponent(lblRg)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(txtRg))
+                                    .addComponent(lblDadosPessoais))
+                                .addComponent(nomeCadastro2)
+                                .addGroup(painelTelaCadastroLayout.createSequentialGroup()
+                                    .addComponent(cepLabel)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                    .addComponent(nomeTXT, javax.swing.GroupLayout.PREFERRED_SIZE, 373, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(cepText, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(estadoLabel)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(estadoText, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGroup(painelTelaCadastroLayout.createSequentialGroup()
-                                    .addComponent(labelCpf)
+                                    .addComponent(emailLabel)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(cpfText, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGap(37, 37, 37)
-                                    .addComponent(labelCpf1)
+                                    .addComponent(emailText, javax.swing.GroupLayout.PREFERRED_SIZE, 288, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(rGTXT))
-                                .addComponent(nomeCadastro))
-                            .addComponent(nomeCadastro2)
-                            .addGroup(painelTelaCadastroLayout.createSequentialGroup()
-                                .addComponent(cepLabel)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(cepText, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(labelCpf5)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(cpfText4, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(painelTelaCadastroLayout.createSequentialGroup()
-                                .addComponent(labelCpf4)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(cpfText3, javax.swing.GroupLayout.PREFERRED_SIZE, 288, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(labelCpf6)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(telefoneText, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                    .addComponent(labelCpf6)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(telefoneText, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE))))))
                 .addContainerGap(58, Short.MAX_VALUE))
         );
         painelTelaCadastroLayout.setVerticalGroup(
             painelTelaCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(painelTelaCadastroLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(labelCadstro)
+                .addComponent(lblCadstro)
                 .addGap(13, 13, 13)
-                .addComponent(nomeCadastro)
+                .addComponent(lblDadosPessoais)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(painelTelaCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(nomeTXT, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(nomeCadastro1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(painelTelaCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(labelCpf)
-                    .addComponent(cpfText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(rGTXT, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(labelCpf1))
+                    .addComponent(lblCpf)
+                    .addComponent(txtCpf, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtRg, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblRg))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(painelTelaCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(labelCpf2)
-                    .addComponent(cpfText1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(labelCpf3)
-                    .addComponent(cpfText2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lblNacionalidade)
+                    .addComponent(txtNascimento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(nascimentoLabel)
+                    .addComponent(nacionalidadeText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(44, 44, 44)
                 .addComponent(nomeCadastro2)
                 .addGap(18, 18, 18)
                 .addGroup(painelTelaCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(labelCpf4)
-                    .addComponent(cpfText3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(emailLabel)
+                    .addComponent(emailText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(telefoneText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(labelCpf6))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(painelTelaCadastroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(labelCpf5)
-                    .addComponent(cpfText4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(estadoLabel)
+                    .addComponent(estadoText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cepLabel)
                     .addComponent(cepText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(100, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
+                .addComponent(cadastrarButton, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(29, 29, 29))
         );
 
         javax.swing.GroupLayout painelCadastroLayout = new javax.swing.GroupLayout(painelCadastro);
@@ -328,33 +341,33 @@ public class TelaCadastro extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void nomeTXTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nomeTXTActionPerformed
+    private void txtNomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNomeActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_nomeTXTActionPerformed
+    }//GEN-LAST:event_txtNomeActionPerformed
 
-    private void rGTXTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rGTXTActionPerformed
+    private void txtRgActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtRgActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_rGTXTActionPerformed
+    }//GEN-LAST:event_txtRgActionPerformed
 
-    private void cpfTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cpfTextActionPerformed
+    private void txtCpfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCpfActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_cpfTextActionPerformed
+    }//GEN-LAST:event_txtCpfActionPerformed
 
-    private void cpfText1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cpfText1ActionPerformed
+    private void txtNascimentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNascimentoActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_cpfText1ActionPerformed
+    }//GEN-LAST:event_txtNascimentoActionPerformed
 
-    private void cpfText2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cpfText2ActionPerformed
+    private void nacionalidadeTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nacionalidadeTextActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_cpfText2ActionPerformed
+    }//GEN-LAST:event_nacionalidadeTextActionPerformed
 
-    private void cpfText3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cpfText3ActionPerformed
+    private void emailTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_emailTextActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_cpfText3ActionPerformed
+    }//GEN-LAST:event_emailTextActionPerformed
 
-    private void cpfText4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cpfText4ActionPerformed
+    private void estadoTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_estadoTextActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_cpfText4ActionPerformed
+    }//GEN-LAST:event_estadoTextActionPerformed
 
     private void telefoneTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_telefoneTextActionPerformed
         // TODO add your handling code here:
@@ -363,6 +376,10 @@ public class TelaCadastro extends javax.swing.JFrame {
     private void cepTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cepTextActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_cepTextActionPerformed
+
+    private void cadastrarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cadastrarButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cadastrarButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -400,30 +417,31 @@ public class TelaCadastro extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton cadastrarButton;
     private javax.swing.JLabel cepLabel;
     private javax.swing.JTextField cepText;
-    private javax.swing.JTextField cpfText;
-    private javax.swing.JTextField cpfText1;
-    private javax.swing.JTextField cpfText2;
-    private javax.swing.JTextField cpfText3;
-    private javax.swing.JTextField cpfText4;
+    private javax.swing.JLabel emailLabel;
+    private javax.swing.JTextField emailText;
+    private javax.swing.JLabel estadoLabel;
+    private javax.swing.JTextField estadoText;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel labelCadstro;
-    private javax.swing.JLabel labelCpf;
-    private javax.swing.JLabel labelCpf1;
-    private javax.swing.JLabel labelCpf2;
-    private javax.swing.JLabel labelCpf3;
-    private javax.swing.JLabel labelCpf4;
-    private javax.swing.JLabel labelCpf5;
     private javax.swing.JLabel labelCpf6;
-    private javax.swing.JLabel nomeCadastro;
+    private javax.swing.JLabel lblCadstro;
+    private javax.swing.JLabel lblCpf;
+    private javax.swing.JLabel lblDadosPessoais;
+    private javax.swing.JLabel lblNacionalidade;
+    private javax.swing.JLabel lblRg;
+    private javax.swing.JTextField nacionalidadeText;
+    private javax.swing.JLabel nascimentoLabel;
     private javax.swing.JLabel nomeCadastro1;
     private javax.swing.JLabel nomeCadastro2;
-    private javax.swing.JTextField nomeTXT;
     private javax.swing.JPanel painelCadastro;
     private javax.swing.JPanel painelTelaCadastro;
-    private javax.swing.JTextField rGTXT;
     private javax.swing.JTextField telefoneText;
+    private javax.swing.JTextField txtCpf;
+    private javax.swing.JTextField txtNascimento;
+    private javax.swing.JTextField txtNome;
+    private javax.swing.JTextField txtRg;
     private javax.swing.JPanel venhaParaAVaultBank;
     // End of variables declaration//GEN-END:variables
 }
