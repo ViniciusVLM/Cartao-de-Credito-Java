@@ -61,6 +61,7 @@ public class Historico {
                         compra.getDescricao(),
                         compra.getValorCompra(),
                         compra.getEstabelecimento());
+                System.out.println("teste");
             }
         }
     }
