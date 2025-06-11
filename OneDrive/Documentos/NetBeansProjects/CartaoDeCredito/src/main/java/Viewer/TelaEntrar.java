@@ -4,6 +4,17 @@
  */
 package Viewer;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import javax.swing.JOptionPane;
+import Model.Cartao;
+import Model.Cliente;
+import Model.Compras;
+import Model.Denuncia;
+import Dao.CartaoDao;
+import Dao.ClienteDao;
+import Dao.CompraDao;
+import Dao.DenunciaDao;
 /**
  *
  * @author Vinip
@@ -30,10 +41,10 @@ public class TelaEntrar extends javax.swing.JFrame {
         jPanel3 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
+        txtCPF = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         btnEntrar = new javax.swing.JButton();
-        jPasswordField1 = new javax.swing.JPasswordField();
+        PasswordSenha = new javax.swing.JPasswordField();
         jPanel2 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -52,11 +63,11 @@ public class TelaEntrar extends javax.swing.JFrame {
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("CPF");
 
-        jTextField2.setBackground(new java.awt.Color(115, 185, 221));
-        jTextField2.setForeground(new java.awt.Color(51, 51, 51));
-        jTextField2.addActionListener(new java.awt.event.ActionListener() {
+        txtCPF.setBackground(new java.awt.Color(115, 185, 221));
+        txtCPF.setForeground(new java.awt.Color(51, 51, 51));
+        txtCPF.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField2ActionPerformed(evt);
+                txtCPFActionPerformed(evt);
             }
         });
 
@@ -67,9 +78,14 @@ public class TelaEntrar extends javax.swing.JFrame {
         btnEntrar.setBackground(new java.awt.Color(2, 72, 115));
         btnEntrar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnEntrar.setText("Entrar");
+        btnEntrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEntrarActionPerformed(evt);
+            }
+        });
 
-        jPasswordField1.setBackground(new java.awt.Color(115, 185, 221));
-        jPasswordField1.setForeground(new java.awt.Color(0, 0, 0));
+        PasswordSenha.setBackground(new java.awt.Color(115, 185, 221));
+        PasswordSenha.setForeground(new java.awt.Color(0, 0, 0));
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -84,7 +100,7 @@ public class TelaEntrar extends javax.swing.JFrame {
                             .addGroup(jPanel3Layout.createSequentialGroup()
                                 .addComponent(jLabel1)
                                 .addGap(32, 32, 32)
-                                .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addComponent(PasswordSenha, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGap(145, 145, 145)
                         .addComponent(jLabel5)))
@@ -96,7 +112,7 @@ public class TelaEntrar extends javax.swing.JFrame {
             .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                     .addContainerGap(165, Short.MAX_VALUE)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtCPF, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGap(96, 96, 96)))
         );
         jPanel3Layout.setVerticalGroup(
@@ -109,14 +125,14 @@ public class TelaEntrar extends javax.swing.JFrame {
                 .addGap(35, 35, 35)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(PasswordSenha, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 45, Short.MAX_VALUE)
                 .addComponent(btnEntrar, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(34, 34, 34))
             .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel3Layout.createSequentialGroup()
                     .addGap(97, 97, 97)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtCPF, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addContainerGap(189, Short.MAX_VALUE)))
         );
 
@@ -192,9 +208,32 @@ public class TelaEntrar extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
+    private void txtCPFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCPFActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField2ActionPerformed
+    }//GEN-LAST:event_txtCPFActionPerformed
+
+    private void btnEntrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEntrarActionPerformed
+        // TODO add your handling code here:
+        
+        // Obtém o CPF e a senha digitados pelo usuário nos campos de texto
+        String CPF = txtCPF.getText();
+        String Senha = new String(PasswordSenha.getPassword());
+        
+        // Cria uma instância do DAO para acessar os dados do cliente
+        ClienteDao clienteDao = new ClienteDao();
+        
+        // Tenta autenticar o cliente usando o CPF e a senha fornecidos
+        Cliente cliente = clienteDao.autenticar(CPF, Senha);
+        
+        // Verifica se o cliente foi autenticado com sucesso
+        if (cliente != null) {
+            
+            // Verifica se o cliente é um administrador
+            boolean isAdmin = cliente.getIsAdmin();
+        }
+        // Colocar Tela Admin -- Continuação Giovanna
+        // Continuação aguardando implementação da Tela Admin
+    }//GEN-LAST:event_btnEntrarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -232,6 +271,7 @@ public class TelaEntrar extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPasswordField PasswordSenha;
     private javax.swing.JButton btnEntrar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -241,7 +281,6 @@ public class TelaEntrar extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JPasswordField jPasswordField1;
-    private javax.swing.JTextField jTextField2;
+    private javax.swing.JTextField txtCPF;
     // End of variables declaration//GEN-END:variables
 }

@@ -1,18 +1,17 @@
-
 package com.mycompany.cartaodecredito;
 
 
 
 public class Usuario {
     private final String nome;
-    private final String cpf;
-    private final String senha;
+    private final String CPF;
+    private final String Senha;
     private final boolean isAdmin;
 
-    public Usuario(String nome, String cpf, String senha, boolean isAdmin) {
+    public Usuario(String nome, String CPF, String Senha, boolean isAdmin) {
         this.nome = nome;
-        this.cpf = cpf;
-        this.senha = senha;
+        this.CPF = CPF;
+        this.Senha = Senha;
         this.isAdmin = isAdmin;
     }
 
@@ -25,9 +24,3 @@ public class Usuario {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 }
-
-
-
-
-
-
