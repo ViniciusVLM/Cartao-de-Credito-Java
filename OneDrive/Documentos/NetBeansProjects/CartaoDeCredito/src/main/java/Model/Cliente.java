@@ -1,116 +1,106 @@
 
 package Model;
 
+import com.mycompany.cartaodecredito.Usuario;
 import java.time.LocalDate;
 
-public class Cliente {
-    private int IdCliente;
-    private String Nome;
-    private String CPF;
-    private String RG;
-    private String Email;
-    private String Telefone;
-    private LocalDate DataNascimento;
-    private String Nacionalidade;
-    private String CEP;
-    private String Estado;
-    
-    public Cliente(){
-        
-    }
-    public Cliente(String Nome, String CPF, String RG, String Email, String Telefone, LocalDate DataNascimento, String Nacionalidade, String CEP, String Estado){
-        this.Nome = Nome;
-        this.CPF = CPF;
-        this.RG = RG;
-        this.Email = Email;
-        this.Telefone = Telefone;
-        this.DataNascimento = DataNascimento;
-        this.Nacionalidade = Nacionalidade;
-        this.CEP = CEP;
-        this.Estado = Estado;
-        
+  public class Cliente extends Usuario {
+    private int idCliente;
+    private String rg;
+    private String email;
+    private String telefone;
+    private LocalDate dataNascimento;
+    private String nacionalidade;
+    private String cep;
+    private String estado;
+
+   public Cliente(String nome, String cpf, String senha, boolean isAdmin,
+               String rg, String email, String telefone,
+               LocalDate dataNascimento, String nacionalidade,
+               String cep, String estado) {
+
+    super(nome, cpf, senha, isAdmin); 
+
+    this.rg = rg;
+    this.email = email;
+    this.telefone = telefone;
+    this.dataNascimento = dataNascimento;
+    this.nacionalidade = nacionalidade;
+    this.cep = cep;
+    this.estado = estado;
     }
 
     public int getIdCliente() {
-        return IdCliente;
+        return idCliente;
     }
 
-    public void setIdCliente(int IdCliente) {
-        this.IdCliente = IdCliente;
-    }
-
-    public String getNome() {
-        return Nome;
-    }
-
-    public void setNome(String Nome) {
-        this.Nome = Nome;
-    }
-
-    public String getCPF() {
-        return CPF;
-    }
-
-    public void setCPF(String CPF) {
-        this.CPF = CPF;
+    public void setIdCliente(int idCliente) {
+        this.idCliente = idCliente;
     }
 
     public String getRG() {
-        return RG;
+        return rg;
     }
 
-    public void setRG(String RG) {
-        this.RG = RG;
+    public void setRG(String rg) {
+        this.rg = rg;
     }
 
     public String getEmail() {
-        return Email;
+        return email;
     }
 
-    public void setEmail(String Email) {
-        this.Email = Email;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getTelefone() {
-        return Telefone;
+        return telefone;
     }
 
-    public void setTelefone(String Telefone) {
-        this.Telefone = Telefone;
+    public void setTelefone(String telefone) {
+        this.telefone = telefone;
     }
 
     public LocalDate getDataNascimento() {
-        return DataNascimento;
+        return dataNascimento;
     }
 
-    public void setDataNascimento(LocalDate DataNascimento) {
-        this.DataNascimento = DataNascimento;
+    public void setDataNascimento(LocalDate dataNascimento) {
+        this.dataNascimento = dataNascimento;
     }
 
     public String getNacionalidade() {
-        return Nacionalidade;
+        return nacionalidade;
     }
 
-    public void setNacionalidade(String Nacionalidade) {
-        this.Nacionalidade = Nacionalidade;
+    public void setNacionalidade(String nacionalidade) {
+        this.nacionalidade = nacionalidade;
     }
 
     public String getCEP() {
-        return CEP;
+        return cep;
     }
 
-    public void setCEP(String CEP) {
-        this.CEP = CEP;
+    public void setCEP(String cep) {
+        this.cep = cep;
     }
 
     public String getEstado() {
-        return Estado;
+        return estado;
     }
 
-    public void setEstado(String Estado) {
-        this.Estado = Estado;
+    public void setEstado(String estado) {
+        this.estado = estado;
     }
+
+    // Polimorfismo: sobrescrevendo método
+    public void exibirPerfil() {
+        System.out.println("Cliente: " + getNome() + ", Email: " + getEmail());
+    }
+}
+    
         
     
     
-}
+
