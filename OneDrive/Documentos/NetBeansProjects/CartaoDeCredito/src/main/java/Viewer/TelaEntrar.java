@@ -235,7 +235,7 @@ public class TelaEntrar extends javax.swing.JFrame {
         // Verifica se o cliente é um administrador
         boolean isAdmin = cliente.getIsAdmin();
 
-        if (isAdmin) {
+        if (cliente.getIsAdmin()) {
             // Abrir a tela de admin
             TelaAdmin admin = new TelaAdmin();
             admin.setVisible(true);
