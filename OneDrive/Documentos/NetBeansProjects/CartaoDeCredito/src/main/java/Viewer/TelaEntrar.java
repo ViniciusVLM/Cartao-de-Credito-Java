@@ -15,6 +15,7 @@ import Dao.CartaoDao;
 import Dao.ClienteDao;
 import Dao.CompraDao;
 import Dao.DenunciaDao;
+import com.mycompany.cartaodecredito.Usuario;
 /**
  *
  * @author Vinip
@@ -215,24 +216,37 @@ public class TelaEntrar extends javax.swing.JFrame {
     private void btnEntrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEntrarActionPerformed
         // TODO add your handling code here:
         
-        // Obtém o CPF e a senha digitados pelo usuário nos campos de texto
-        String CPF = txtCPF.getText();
-        String Senha = new String(PasswordSenha.getPassword());
+    // Obtém o CPF e a senha digitados pelo usuário nos campos de texto
+    String CPF = txtCPF.getText();
+    String Senha = new String(PasswordSenha.getPassword());
+
+    
+    // Cria uma instância do DAO para acessar os dados do cliente
+    ClienteDao clienteDao = new ClienteDao();
+
+    
+    // Tenta autenticar o cliente usando o CPF e a senha fornecidos
+    Cliente cliente = clienteDao.autenticar(CPF, Senha);
+
+    
+    // Verifica se o cliente foi autenticado com sucesso
+    if (cliente != null) {
         
-        // Cria uma instância do DAO para acessar os dados do cliente
-        ClienteDao clienteDao = new ClienteDao();
-        
-        // Tenta autenticar o cliente usando o CPF e a senha fornecidos
-        Cliente cliente = clienteDao.autenticar(CPF, Senha);
-        
-        // Verifica se o cliente foi autenticado com sucesso
-        if (cliente != null) {
-            
-            // Verifica se o cliente é um administrador
-            boolean isAdmin = cliente.getIsAdmin();
+        // Verifica se o cliente é um administrador
+        boolean isAdmin = cliente.getIsAdmin();
+
+        if (isAdmin) {
+            // Abrir a tela de admin
+            TelaAdmin admin = new TelaAdmin();
+            admin.setVisible(true);
+        } else {
+            // Abrir a tela de usuário comum
+            //Esperando confirmaçao da tela de usuario
         }
-        // Colocar Tela Admin -- Continuação Giovanna
-        // Continuação aguardando implementação da Tela Admin
+
+        // Fecha a tela de login
+        this.dispose();
+    } 
     }//GEN-LAST:event_btnEntrarActionPerformed
 
     /**
