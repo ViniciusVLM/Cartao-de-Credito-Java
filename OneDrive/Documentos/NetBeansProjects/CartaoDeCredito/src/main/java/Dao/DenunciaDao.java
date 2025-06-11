@@ -48,6 +48,7 @@ public class DenunciaDao {
             WHERE d.Id_Denuncia = ? AND d.Status = 'Compra Fraudulenta';
         """;
         
+        
         // Insere registro no histórico de reembolsos
         String insere_Historico = """
             INSERT INTO HistoricoReembolso (Id_Cliente, Id_Compra, Valor_Reembolsado, Data_Reembolso)
@@ -56,6 +57,7 @@ public class DenunciaDao {
             JOIN Compras cp ON d.Id_Compra = cp.Id_Compra
             WHERE d.Id_Denuncia = ?;
         """;
+        
         
          // Atualiza o status da denúncia para "Resolvida"
         String atualiza_Status_Denuncia = """
