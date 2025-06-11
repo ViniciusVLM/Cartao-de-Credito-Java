@@ -1,4 +1,3 @@
-
 package Model;
 
 import java.time.LocalDate;
@@ -14,11 +13,15 @@ public class Cliente {
     private String Nacionalidade;
     private String CEP;
     private String Estado;
+    private boolean isAdmin;
+    private String Senha;
+    private double Saldo;
     
     public Cliente(){
         
     }
-    public Cliente(String Nome, String CPF, String RG, String Email, String Telefone, LocalDate DataNascimento, String Nacionalidade, String CEP, String Estado){
+    public Cliente(String Nome, String CPF, String RG, String Email, String Telefone, LocalDate DataNascimento, String Nacionalidade, String CEP, String Estado
+            , boolean isAdmin, String Senha, double Saldo){
         this.Nome = Nome;
         this.CPF = CPF;
         this.RG = RG;
@@ -28,6 +31,9 @@ public class Cliente {
         this.Nacionalidade = Nacionalidade;
         this.CEP = CEP;
         this.Estado = Estado;
+        this.isAdmin = isAdmin;
+        this.Senha = Senha;
+        this.Saldo = Saldo;
         
     }
 
@@ -109,6 +115,30 @@ public class Cliente {
 
     public void setEstado(String Estado) {
         this.Estado = Estado;
+    }
+
+    public boolean getIsAdmin() {
+        return isAdmin;
+    }
+
+    public void setIsAdmin(boolean isAdmin) {
+        this.isAdmin = isAdmin;
+    }
+
+    public String getSenha() {
+        return Senha;
+    }
+
+    public void setSenha(String Senha) {
+        this.Senha = Senha;
+    }
+
+    public double getSaldo() {
+        return Saldo;
+    }
+
+    public void setSaldo(double Saldo) {
+        this.Saldo = Saldo;
     }
         
     
