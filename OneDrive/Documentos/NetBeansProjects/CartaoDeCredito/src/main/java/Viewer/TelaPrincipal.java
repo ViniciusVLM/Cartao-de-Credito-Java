@@ -45,6 +45,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
         lblApresentacao3 = new javax.swing.JLabel();
         lblApresentacao4 = new javax.swing.JLabel();
         panImage = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -172,57 +173,75 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
         panApresentacao.setBackground(new java.awt.Color(242, 206, 22));
 
+        lblApresentacao.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         lblApresentacao.setForeground(new java.awt.Color(255, 255, 255));
         lblApresentacao.setText("VaultBank: segurança e benefícios no");
 
+        lblApresentacao1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         lblApresentacao1.setForeground(new java.awt.Color(255, 255, 255));
         lblApresentacao1.setText("                      seu cartão.");
         lblApresentacao1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
+        lblApresentacao2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         lblApresentacao2.setForeground(new java.awt.Color(255, 255, 255));
         lblApresentacao2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblApresentacao2.setText("Proteção avançada, cashback e zero ");
 
+        lblApresentacao3.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         lblApresentacao3.setForeground(new java.awt.Color(255, 255, 255));
         lblApresentacao3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblApresentacao3.setText("complicação. Peça o seu.");
         lblApresentacao3.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
+        lblApresentacao4.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         lblApresentacao4.setForeground(new java.awt.Color(255, 255, 255));
         lblApresentacao4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblApresentacao4.setText("VaultBank – seu dinheiro protegido, sua");
+        lblApresentacao4.setText("VaultBank – seu dinheiro protegido");
+
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Viewer/imagem/fundo.jpg"))); // NOI18N
 
         javax.swing.GroupLayout panImageLayout = new javax.swing.GroupLayout(panImage);
         panImage.setLayout(panImageLayout);
         panImageLayout.setHorizontalGroup(
             panImageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 317, Short.MAX_VALUE)
+            .addComponent(jLabel1)
         );
         panImageLayout.setVerticalGroup(
             panImageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 186, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panImageLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout panApresentacaoLayout = new javax.swing.GroupLayout(panApresentacao);
         panApresentacao.setLayout(panApresentacaoLayout);
         panApresentacaoLayout.setHorizontalGroup(
             panApresentacaoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panApresentacaoLayout.createSequentialGroup()
-                .addGap(64, 64, 64)
-                .addGroup(panApresentacaoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(lblApresentacao1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lblApresentacao, javax.swing.GroupLayout.DEFAULT_SIZE, 227, Short.MAX_VALUE)
-                    .addComponent(lblApresentacao4)
-                    .addComponent(lblApresentacao2, javax.swing.GroupLayout.DEFAULT_SIZE, 227, Short.MAX_VALUE)
-                    .addComponent(lblApresentacao3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(26, Short.MAX_VALUE))
             .addComponent(panImage, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(panApresentacaoLayout.createSequentialGroup()
+                .addGroup(panApresentacaoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panApresentacaoLayout.createSequentialGroup()
+                        .addGap(65, 65, 65)
+                        .addGroup(panApresentacaoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblApresentacao)
+                            .addGroup(panApresentacaoLayout.createSequentialGroup()
+                                .addGap(6, 6, 6)
+                                .addGroup(panApresentacaoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(panApresentacaoLayout.createSequentialGroup()
+                                        .addGap(6, 6, 6)
+                                        .addComponent(lblApresentacao2))
+                                    .addComponent(lblApresentacao1, javax.swing.GroupLayout.PREFERRED_SIZE, 292, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(lblApresentacao4, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(panApresentacaoLayout.createSequentialGroup()
+                        .addGap(105, 105, 105)
+                        .addComponent(lblApresentacao3, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         panApresentacaoLayout.setVerticalGroup(
             panApresentacaoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panApresentacaoLayout.createSequentialGroup()
                 .addComponent(panImage, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addComponent(lblApresentacao)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblApresentacao1)
@@ -232,7 +251,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
                 .addComponent(lblApresentacao3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblApresentacao4)
-                .addGap(41, 41, 41))
+                .addContainerGap(41, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout panTelaInicialLayout = new javax.swing.GroupLayout(panTelaInicial);
@@ -245,22 +264,24 @@ public class TelaPrincipal extends javax.swing.JFrame {
                 .addGroup(panTelaInicialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(panEntrar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(panCadastrar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 214, Short.MAX_VALUE)
+                .addGap(151, 151, 151)
                 .addComponent(panApresentacao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(121, 121, 121))
+                .addContainerGap(25, Short.MAX_VALUE))
         );
         panTelaInicialLayout.setVerticalGroup(
             panTelaInicialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panTelaInicialLayout.createSequentialGroup()
                 .addComponent(panHeader, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(67, 67, 67)
-                .addGroup(panTelaInicialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(panTelaInicialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panTelaInicialLayout.createSequentialGroup()
+                        .addGap(67, 67, 67)
                         .addComponent(panEntrar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(panCadastrar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(panApresentacao, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(panTelaInicialLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(panApresentacao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(18, 18, 18))
         );
 
         panApresentacao.getAccessibleContext().setAccessibleName("seu cartão.");
@@ -269,14 +290,17 @@ public class TelaPrincipal extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(panTelaInicial, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(panTelaInicial, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(panTelaInicial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(51, Short.MAX_VALUE))
         );
 
         pack();
@@ -327,6 +351,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCadastrar;
     private javax.swing.JButton btnEntrar;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel lblApresentacao;
     private javax.swing.JLabel lblApresentacao1;
     private javax.swing.JLabel lblApresentacao2;
