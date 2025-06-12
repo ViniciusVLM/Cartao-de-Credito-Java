@@ -241,7 +241,8 @@ public class TelaEntrar extends javax.swing.JFrame {
             admin.setVisible(true);
         } else {
             // Abrir a tela de usuário comum
-            //Esperando confirmaçao da tela de usuario
+            TelaUsuario usuario = new TelaUsuario();
+            usuario.setVisible(true);
         }
 
         // Fecha a tela de login

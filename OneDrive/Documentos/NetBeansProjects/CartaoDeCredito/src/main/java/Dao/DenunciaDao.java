@@ -106,9 +106,10 @@ public class DenunciaDao {
             FROM Denuncia d
             JOIN Compras cp ON d.Id_Compra = cp.Id_Compra
             JOIN Cliente c ON d.Id_Cliente = c.Id_Cliente
-            WHERE d.Status != 'Resolvida'
+            WHERE d.Status NOT IN ('Resolvida', 'Cancelada')
             ORDER BY d.Id_Denuncia
         """;
+        
 
         try (Connection con = new ConnectFactory().getConnection();
              PreparedStatement ps = con.prepareStatement(sql);
@@ -138,7 +139,38 @@ public class DenunciaDao {
 
         return lista;
     }
+    public List<String> listarHistoricoReembolso() {
+    List<String> lista = new ArrayList<>();
+    String sql = """
+        SELECT hr.Id_Cliente, hr.Id_Compra, hr.Valor_Reembolsado, hr.Data_Reembolso, c.Nome
+        FROM HistoricoReembolso hr
+        JOIN Cliente c ON hr.Id_Cliente = c.Id_Cliente
+        ORDER BY hr.Data_Reembolso DESC
+    """;
 
+    try (Connection con = new ConnectFactory().getConnection();
+         PreparedStatement ps = con.prepareStatement(sql);
+         ResultSet rs = ps.executeQuery()) {
+
+        while (rs.next()) {
+            String nome = rs.getString("Nome");
+            int idCompra = rs.getInt("Id_Compra");
+            double valor = rs.getDouble("Valor_Reembolsado");
+            java.sql.Date data = rs.getDate("Data_Reembolso");
+
+            String linha = "Cliente: " + nome +
+                           " | Compra: " + idCompra +
+                           " | Valor: R$" + valor +
+                           " | Data: " + data;
+            lista.add(linha);
+        }
+
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+
+    return lista;
+}
     
     
 }

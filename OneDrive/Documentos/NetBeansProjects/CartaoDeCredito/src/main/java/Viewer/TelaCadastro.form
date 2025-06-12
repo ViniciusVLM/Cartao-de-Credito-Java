@@ -185,6 +185,34 @@
                                               <EmptySpace max="-2" attributes="0"/>
                                               <Component id="jPasswordField1" min="-2" pref="170" max="-2" attributes="0"/>
                                           </Group>
+<<<<<<< HEAD
+=======
+                                          <Component id="lblDadosPessoais" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      </Group>
+                                      <Component id="nomeCadastro2" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Group type="102" alignment="0" attributes="0">
+                                          <Component id="cepLabel" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                          <Component id="cepText" min="-2" pref="139" max="-2" attributes="0"/>
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Component id="estadoLabel" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Component id="estadoText" min="-2" pref="139" max="-2" attributes="0"/>
+                                      </Group>
+                                      <Group type="102" alignment="0" attributes="0">
+                                          <Component id="emailLabel" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Component id="emailText" min="-2" pref="288" max="-2" attributes="0"/>
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Component id="labelCpf6" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Component id="telefoneText" min="-2" pref="139" max="-2" attributes="0"/>
+                                      </Group>
+                                      <Group type="102" alignment="0" attributes="0">
+                                          <Component id="emailLabel1" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Component id="PasswordSenha" min="-2" pref="170" max="-2" attributes="0"/>
+>>>>>>> 9297a2b (Atualizei a master)
                                       </Group>
                                       <EmptySpace min="-2" pref="43" max="-2" attributes="0"/>
                                   </Group>
@@ -240,7 +268,7 @@
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="emailLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="jPasswordField1" alignment="3" min="-2" pref="20" max="-2" attributes="0"/>
+                          <Component id="PasswordSenha" alignment="3" min="-2" pref="20" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="32767" attributes="0"/>
                       <Component id="cadastrarButton" min="-2" pref="36" max="-2" attributes="0"/>
@@ -521,14 +549,14 @@
                 <Property name="text" type="java.lang.String" value="Crie sua senha:"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JPasswordField" name="jPasswordField1">
+            <Component class="javax.swing.JPasswordField" name="PasswordSenha">
               <Properties>
                 <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="dd" green="b9" red="73" type="rgb"/>
                 </Property>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jPasswordField1ActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="PasswordSenhaActionPerformed"/>
               </Events>
             </Component>
           </SubComponents>
