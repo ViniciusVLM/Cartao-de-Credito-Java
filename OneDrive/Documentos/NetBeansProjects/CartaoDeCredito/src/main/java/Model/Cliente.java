@@ -1,6 +1,7 @@
 package Model;
 
 import java.time.LocalDate;
+import java.math.BigDecimal;
 
 public class Cliente {
     private int IdCliente;
@@ -15,13 +16,13 @@ public class Cliente {
     private String Estado;
     private boolean isAdmin;
     private String Senha;
-    private double Saldo;
+    private BigDecimal Saldo;
     
     public Cliente(){
         
     }
     public Cliente(String Nome, String CPF, String RG, String Email, String Telefone, LocalDate DataNascimento, String Nacionalidade, String CEP, String Estado
-            , boolean isAdmin, String Senha, double Saldo){
+            , boolean isAdmin, String Senha, BigDecimal Saldo){
         this.Nome = Nome;
         this.CPF = CPF;
         this.RG = RG;
@@ -133,11 +134,11 @@ public class Cliente {
         this.Senha = Senha;
     }
 
-    public double getSaldo() {
+    public BigDecimal getSaldo() {
         return Saldo;
     }
 
-    public void setSaldo(double Saldo) {
+    public void setSaldo(BigDecimal Saldo) {
         this.Saldo = Saldo;
     }
         

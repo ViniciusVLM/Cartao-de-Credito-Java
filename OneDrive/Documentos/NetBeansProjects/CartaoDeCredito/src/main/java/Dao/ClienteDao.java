@@ -7,6 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.time.LocalDate;
 import javax.swing.JOptionPane;
+import java.math.BigDecimal;
 
 public class ClienteDao {
     private Connection con;
@@ -33,7 +34,7 @@ public class ClienteDao {
             ps.setString(9, c.getEstado());
             ps.setBoolean(10, c.getIsAdmin());
             ps.setString(11, c.getSenha());
-            ps.setDouble(12, c.getSaldo());
+            ps.setBigDecimal(12, c.getSaldo());
 
             ps.execute();
             JOptionPane.showMessageDialog(null, "Cadastro concluído com sucesso!");
@@ -65,7 +66,7 @@ public class ClienteDao {
                 c.setEstado(rs.getString("Estado"));
                 c.setIsAdmin(rs.getBoolean("isAdmin"));
                 c.setSenha(rs.getString("Senha"));
-                c.setSaldo(rs.getDouble("Saldo"));
+                c.setSaldo(rs.getBigDecimal("Saldo"));
                 return c;
             } else {
                 JOptionPane.showMessageDialog(null, "CPF ou senha inválidos.");

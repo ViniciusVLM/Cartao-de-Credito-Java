@@ -4,6 +4,19 @@
  */
 package Viewer;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import javax.swing.JOptionPane;
+import Model.Cartao;
+import Model.Cliente;
+import Model.Compras;
+import Model.Denuncia;
+import Dao.CartaoDao;
+import Dao.ClienteDao;
+import Dao.CompraDao;
+import Dao.DenunciaDao;
+import com.mycompany.cartaodecredito.Usuario;
+import java.math.BigDecimal;
 /**
  *
  * @author Vinip
@@ -406,6 +419,28 @@ public class TelaCadastro extends javax.swing.JFrame {
 
     private void cadastrarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cadastrarButtonActionPerformed
         // TODO add your handling code here:
+        Cliente cliente = new Cliente();
+        cliente.setNome(txtNome.getText());
+        cliente.setCPF(txtCpf.getText());
+        cliente.setRG(txtRg.getText());
+        cliente.setEmail(emailText.getText());
+        cliente.setTelefone(telefoneText.getText());
+        cliente.setDataNascimento(LocalDate.parse(txtNascimento.getText())); // formato: "yyyy-MM-dd"
+        cliente.setNacionalidade(nacionalidadeText.getText());
+        cliente.setCEP(cepText.getText());
+        cliente.setEstado(estadoText.getText());
+    
+        // Define senha padrão por enquanto
+        cliente.setSenha("123"); 
+        cliente.setSaldo(BigDecimal.ZERO);
+        cliente.setIsAdmin(false);
+
+        Cliente model = new Cliente();
+        ClienteDao dao = new ClienteDao();
+        dao.CadastrarUsuario(cliente);
+        
+        this.dispose(); // fecha tela após cadastro
+
     }//GEN-LAST:event_cadastrarButtonActionPerformed
 
     private void jPasswordField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jPasswordField1ActionPerformed

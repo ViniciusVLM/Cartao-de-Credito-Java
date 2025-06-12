@@ -310,6 +310,8 @@ public class TelaPrincipal extends javax.swing.JFrame {
     
     private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
         // TODO add your handling code here:
+        TelaCadastro tela = new TelaCadastro();
+        tela.setVisible(true);
     }//GEN-LAST:event_btnCadastrarActionPerformed
 
     private void btnEntrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEntrarActionPerformed
