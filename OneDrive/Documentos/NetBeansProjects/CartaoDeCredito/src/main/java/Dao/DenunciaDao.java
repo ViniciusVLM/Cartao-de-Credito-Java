@@ -9,6 +9,9 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import javax.swing.JOptionPane;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DenunciaDao {
     private Connection con;
@@ -93,6 +96,47 @@ public class DenunciaDao {
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Erro na conexão: " + e.getMessage());
         }
+    }
+    
+    
+    public List<String> listarDenunciasPendentes() {
+        List<String> lista = new ArrayList<>();
+        String sql = """
+            SELECT d.Id_Denuncia, d.Motivo, d.Status, c.Nome, cp.Valor_Compra, c.Id_Cliente
+            FROM Denuncia d
+            JOIN Compras cp ON d.Id_Compra = cp.Id_Compra
+            JOIN Cliente c ON d.Id_Cliente = c.Id_Cliente
+            WHERE d.Status != 'Resolvida'
+            ORDER BY d.Id_Denuncia
+        """;
+
+        try (Connection con = new ConnectFactory().getConnection();
+             PreparedStatement ps = con.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                int idDenuncia = rs.getInt("Id_Denuncia");
+                String nome = rs.getString("Nome");
+                String motivo = rs.getString("Motivo");
+                String status = rs.getString("Status");
+                double valor = rs.getDouble("Valor_Compra");
+                int idCliente = rs.getInt("Id_Cliente");
+
+                // Aqui você monta a texto que vai aparecer no Choice
+                String linha =
+                               " Id " + idCliente +
+                               " | Valor: R$" + valor +
+                               " | Motivo: " + motivo +
+                               " | Status: " + status;
+
+                lista.add(linha);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return lista;
     }
 
     
