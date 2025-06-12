@@ -22,6 +22,7 @@ import com.mycompany.cartaodecredito.Usuario;
  */
 public class TelaEntrar extends javax.swing.JFrame {
 
+    
     /**
      * Creates new form TelaEntrar
      */
