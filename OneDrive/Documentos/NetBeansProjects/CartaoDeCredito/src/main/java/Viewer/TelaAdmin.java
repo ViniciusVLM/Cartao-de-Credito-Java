@@ -201,12 +201,15 @@ public class TelaAdmin extends javax.swing.JFrame {
     }
 
     private void btnReembolsarActionPerformed(java.awt.event.ActionEvent evt) {
+        
+        
         String selecionado = choice1.getSelectedItem();
         if (selecionado == null || selecionado.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Nenhum item selecionado.");
             return;
         }
         JOptionPane.showMessageDialog(this, "Você selecionou: " + selecionado);
+        
     }
 
     public static void main(String args[]) {
