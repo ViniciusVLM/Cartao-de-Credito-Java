@@ -40,7 +40,7 @@ public class CartaoCredito {
         }
 
 void desativar() {
-    throw new UnsupportedOperationException("Not supported yet.");
+    this.ativo = false;
 }
     
 }

@@ -6,7 +6,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.time.LocalDate;
-import javax.swing.JOptionPane;
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.ArrayList;
 import java.math.BigDecimal;
 
 public class ClienteDao {
@@ -16,8 +18,7 @@ public class ClienteDao {
         this.con = new ConnectFactory().getConnection();
     }
 
-    // Cadastro de novo cliente
-    public void CadastrarUsuario(Cliente c) {
+    public boolean CadastrarUsuario(Cliente c) throws Exception {
         String sql = "INSERT INTO Cliente (Nome, CPF, RG, Email, Telefone, " +
                      "Data_Nascimento, Nacionalidade, CEP, Estado, isAdmin, Senha, Saldo) " +
                      "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -37,9 +38,7 @@ public class ClienteDao {
             ps.setBigDecimal(12, c.getSaldo());
 
             ps.execute();
-            JOptionPane.showMessageDialog(null, "Cadastro concluído com sucesso!");
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Erro ao tentar realizar o cadastro do usuário: " + e.getMessage());
+            return true;
         }
     }
 
@@ -69,12 +68,31 @@ public class ClienteDao {
                 c.setSaldo(rs.getBigDecimal("Saldo"));
                 return c;
             } else {
-                JOptionPane.showMessageDialog(null, "CPF ou senha inválidos.");
                 return null;
             }
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Erro ao autenticar: " + e.getMessage());
+            e.printStackTrace();
             return null;
         }
+    }
+
+    public List<Cliente> listarClientes() {
+        List<Cliente> clientes = new ArrayList<>();
+        String sql = "SELECT * FROM Cliente ORDER BY Nome";
+        try (PreparedStatement ps = con.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                Cliente c = new Cliente();
+                c.setIdCliente(rs.getInt("Id_Cliente"));
+                c.setNome(rs.getString("Nome"));
+                c.setCPF(rs.getString("CPF"));
+                c.setEmail(rs.getString("Email"));
+                c.setEstado(rs.getString("Estado"));
+                c.setSaldo(rs.getBigDecimal("Saldo"));
+                c.setIsAdmin(rs.getBoolean("isAdmin"));
+                clientes.add(c);
+            }
+        } catch (Exception e) { e.printStackTrace(); }
+        return clientes;
     }
 }

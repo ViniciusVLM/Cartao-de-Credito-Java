@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VaultBank - Minha Conta</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <nav class="navbar">
+    <a href="index.html" class="navbar__logo">Vault<span>Bank</span></a>
+    <div class="navbar__links">
+      <a href="index.html">Início</a>
+      <a href="#" onclick="Auth.logout(); return false;" class="btn btn-secondary btn-sm">Sair</a>
+    </div>
+  </nav>
+
+  <div class="dashboard">
+    <div class="dashboard__header fade-in-up">
+      <h1 id="greeting">Olá! 👋</h1>
+      <p style="color: var(--text-muted);">Gerencie seu cartão e acompanhe seus gastos</p>
+    </div>
+<div class="stats-grid fade-in-up">
+      <div class="card stat-card">
+        <div class="stat-card__icon">💰</div>
+        <div class="stat-card__info"><h3 id="saldo">R$ 0,00</h3><p>Saldo Disponível</p></div>
+      </div>
+      <div class="card stat-card">
+        <div class="stat-card__icon">🛒</div>
+        <div class="stat-card__info"><h3 id="total-compras">0</h3><p>Total de Compras</p></div>
+      </div>
+      <div class="card stat-card">
+        <div class="stat-card__icon">📅</div>
+        <div class="stat-card__info"><h3 id="gasto-mes">R$ 0,00</h3><p>Gasto este Mês</p></div>
+      </div>
+    </div>
+
+    <div id="invoice-notification" style="display: none; margin-top: 1.5rem;" class="fade-in-up">
+      <div class="card" style="background: linear-gradient(135deg, #EF4444, #B91C1C); color: white;">
+        <h2 style="color: white; margin-bottom: 0.5rem;">🚨 Fatura Fechada</h2>
+        <p>Sua fatura fechou hoje. O valor total da fatura para o mês é: <strong id="fatura-valor" style="font-size: 1.25rem;">R$ 0,00</strong></p>
+      </div>
+    </div>
+
+    <div class="dashboard-grid fade-in-up" style="animation-delay: 0.2s; margin-top: 1.5rem;">
+<div>
+        <div class="credit-card-display" id="card-display">
+          <div class="card-brand">VaultBank</div>
+          <div class="card-number" id="card-number">•••• •••• •••• ••••</div>
+          <div class="card-bottom">
+            <div class="card-name" id="card-name">—</div>
+            <div class="card-expiry"><span>VALIDADE</span><span id="card-exp">--/--</span></div>
+          </div>
+        </div>
+<div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
+          <button class="btn btn-primary btn-sm" onclick="openCompraModal()" style="flex:1;">+ Nova Compra</button>
+          <button class="btn btn-secondary btn-sm" onclick="openDenunciaModal()" style="flex:1;">🚨 Denunciar</button>
+        </div>
+      </div>
+<div class="card">
+        <h2>📊 Histórico de Compras</h2>
+        <div class="table-container">
+          <table>
+            <thead><tr><th>Data</th><th>Local</th><th>Valor</th></tr></thead>
+            <tbody id="compras-tbody"></tbody>
+          </table>
+        </div>
+        <p id="no-compras" style="display:none; text-align:center; color:var(--text-muted); padding:2rem;">Nenhuma compra registrada</p>
+      </div>
+    </div>
+  </div>
+<div class="modal-overlay" id="compra-modal">
+    <div class="modal">
+      <h2>🛒 Registrar Compra</h2>
+      <form id="compra-form">
+        <div class="form-group">
+          <label>Estabelecimento</label>
+          <input type="text" class="form-control" id="comp-estab" placeholder="Ex: Amazon, iFood..." required>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Valor (R$)</label>
+            <input type="number" step="0.01" min="0.01" class="form-control" id="comp-valor" placeholder="0.00" required>
+          </div>
+          <div class="form-group">
+            <label>Data</label>
+            <input type="date" class="form-control" id="comp-data" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Descrição</label>
+          <input type="text" class="form-control" id="comp-desc" placeholder="Ex: Eletrônicos, Alimentação..." required>
+        </div>
+        <div style="display:flex; gap:1rem; margin-top:1rem;">
+          <button type="submit" class="btn btn-primary" style="flex:1;">Registrar</button>
+          <button type="button" class="btn btn-secondary" onclick="closeModal('compra-modal')" style="flex:1;">Cancelar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+<div class="modal-overlay" id="denuncia-modal">
+    <div class="modal">
+      <h2>🚨 Denunciar Compra</h2>
+      <form id="denuncia-form">
+        <div class="form-group">
+          <label>Selecione a Compra</label>
+          <select class="form-control" id="den-compra" required></select>
+        </div>
+        <div class="form-group">
+          <label>Motivo</label>
+          <select class="form-control" id="den-motivo" required>
+            <option value="Compra Fraudulenta">Compra Fraudulenta</option>
+            <option value="Valor Incorreto">Valor Incorreto</option>
+            <option value="Produto Não Recebido">Produto Não Recebido</option>
+            <option value="Cobrança Duplicada">Cobrança Duplicada</option>
+          </select>
+        </div>
+        <div style="display:flex; gap:1rem; margin-top:1rem;">
+          <button type="submit" class="btn btn-danger" style="flex:1;">Enviar Denúncia</button>
+          <button type="button" class="btn btn-secondary" onclick="closeModal('denuncia-modal')" style="flex:1;">Cancelar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <footer class="footer"><p>© 2026 VaultBank — Seu dinheiro protegido.</p></footer>
+
+  <script src="js/app.js"></script>
+  <script src="js/auth.js"></script>
+  <script>
+    if (!Auth.requireAuth()) {  }
+    const user = Auth.getUser();
+    if (user && user.isAdmin) { window.location.href = 'admin.html'; }
+
+    async function loadDashboard() {
+      const u = await Auth.getUser();
+      if (!u) return;
+      document.getElementById('greeting').textContent = `Olá, ${u.nome.split(' ')[0]}! 👋`;
+      document.getElementById('saldo').textContent = formatCurrency(u.saldo || 0);
+
+      const cartoes = await DB.getCartoesByCliente(u.id);
+      if (cartoes && cartoes.length > 0) {
+        const c = cartoes[0];
+        document.getElementById('card-number').textContent = c.numero || c.numerosCartao || '•••• •••• •••• ••••';
+        document.getElementById('card-name').textContent = u.nome.toUpperCase();
+        if(c.validade) {
+          const [y, m] = c.validade.split('-');
+          document.getElementById('card-exp').textContent = `${m}/${y}`;
+        }
+      }
+
+      const compras = await DB.getComprasByCliente(u.id);
+      document.getElementById('total-compras').textContent = compras.length;
+
+      const resReembolsos = await fetch(`/api/reembolsos/${u.id}`);
+      const reembolsos = resReembolsos.ok ? await resReembolsos.json() : [];
+
+      const now = new Date();
+      let gastoMes = compras.filter(c => { const d = new Date(c.transacao + 'T00:00:00'); return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear(); })
+        .reduce((sum, c) => sum + (c.valor || c.valorCompra), 0);
+      
+      const reembolsoMes = reembolsos.filter(r => { const d = new Date(r.dataReembolso + 'T00:00:00'); return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear(); })
+        .reduce((sum, r) => sum + (r.valorReembolsado), 0);
+      
+      gastoMes = gastoMes - reembolsoMes;
+      if(gastoMes < 0) gastoMes = 0;
+
+      document.getElementById('gasto-mes').textContent = formatCurrency(gastoMes);
+
+      if (new Date().getDate() === 30) {
+        document.getElementById('fatura-valor').textContent = formatCurrency(gastoMes);
+        document.getElementById('invoice-notification').style.display = 'block';
+      }
+
+      const tbody = document.getElementById('compras-tbody');
+      const noCompras = document.getElementById('no-compras');
+      if (compras.length === 0 && reembolsos.length === 0) { noCompras.style.display = 'block'; tbody.parentElement.style.display = 'none'; }
+      else {
+        noCompras.style.display = 'none';
+        tbody.parentElement.style.display = 'table';
+        
+        const txs = compras.map(c => ({
+          tipo: 'compra',
+          data: c.transacao,
+          desc: c.estabelecimento + '<br><small style="color:var(--text-muted)">' + c.descricao + '</small>',
+          valor: -(c.valor || c.valorCompra)
+        }));
+        
+        reembolsos.forEach(r => {
+          txs.push({
+            tipo: 'reembolso',
+            data: r.dataReembolso,
+            desc: 'Reembolso: ' + r.estabelecimento,
+            valor: r.valorReembolsado
+          });
+        });
+
+        const sorted = txs.sort((a, b) => new Date(b.data) - new Date(a.data));
+        tbody.innerHTML = sorted.map(t => `
+          <tr>
+            <td>${formatDate(t.data)}</td>
+            <td>${t.desc}</td>
+            <td style="color: ${t.valor > 0 ? '#10B981' : '#EF4444'}; font-weight: 600;">${t.valor > 0 ? '+' : '-'} ${formatCurrency(Math.abs(t.valor))}</td>
+          </tr>
+        `).join('');
+      }
+    }
+
+    function openCompraModal() {
+      document.getElementById('comp-data').value = new Date().toISOString().split('T')[0];
+      document.getElementById('compra-modal').classList.add('active');
+    }
+
+    async function openDenunciaModal() {
+      const u = Auth.getUserSync();
+      const compras = await DB.getComprasByCliente(u.id);
+      const sel = document.getElementById('den-compra');
+      sel.innerHTML = compras.map(c => `<option value="${c.idCompra || c.id}">${c.estabelecimento} — ${formatCurrency(c.valor || c.valorCompra)} (${formatDate(c.transacao)})</option>`).join('');
+      document.getElementById('denuncia-modal').classList.add('active');
+    }
+
+    function closeModal(id) { document.getElementById(id).classList.remove('active'); }
+
+    document.getElementById('compra-form').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const u = Auth.getUserSync();
+      const cartoes = await DB.getCartoesByCliente(u.id);
+      if (!cartoes || !cartoes.length) { showToast('Nenhum cartão encontrado!', 'error'); return; }
+      
+      const res = await DB.cadastrarCompra({
+        idCartao: cartoes[0].idCartao || cartoes[0].id,
+        transacao: document.getElementById('comp-data').value,
+        valorCompra: parseFloat(document.getElementById('comp-valor').value),
+        estabelecimento: document.getElementById('comp-estab').value.trim(),
+        descricao: document.getElementById('comp-desc').value.trim()
+      });
+      
+      if(res.error) { showToast(res.error, 'error'); return; }
+      showToast('Compra registrada com sucesso!', 'success');
+      closeModal('compra-modal');
+      this.reset();
+      loadDashboard();
+    });
+
+    document.getElementById('denuncia-form').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const u = Auth.getUserSync();
+      const res = await DB.cadastrarDenuncia({
+        idCompra: parseInt(document.getElementById('den-compra').value),
+        idCliente: u.id,
+        dataDenuncia: new Date().toISOString().split('T')[0],
+        motivo: document.getElementById('den-motivo').value
+      });
+      if(res.error) { showToast(res.error, 'error'); return; }
+      showToast('Denúncia enviada! O admin irá analisar.', 'success');
+      closeModal('denuncia-modal');
+      this.reset();
+    });
+
+    document.querySelectorAll('.modal-overlay').forEach(m => {
+      m.addEventListener('click', e => { if (e.target === m) m.classList.remove('active'); });
+    });
+
+    loadDashboard();
+  </script>
+</body>
+</html>

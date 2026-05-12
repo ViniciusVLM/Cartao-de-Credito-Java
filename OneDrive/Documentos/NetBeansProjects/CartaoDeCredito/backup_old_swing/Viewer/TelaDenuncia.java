@@ -118,7 +118,7 @@ public class TelaDenuncia extends javax.swing.JFrame {
         jTable1.setInheritsPopupMenu(true);
         jTable1.setSelectionBackground(new java.awt.Color(66, 72, 255));
         jTable1.setSelectionForeground(new java.awt.Color(255, 255, 255));
-        jTable1.setTableHeader(header.setBackground(new Color(255, 204, 0)); );
+        jTable1.getTableHeader().setBackground(new java.awt.Color(255, 204, 0));
         jScrollPane1.setViewportView(jTable1);
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);

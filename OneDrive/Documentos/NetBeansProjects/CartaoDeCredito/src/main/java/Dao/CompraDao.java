@@ -6,7 +6,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import javax.swing.JOptionPane;
+import java.util.List;
+import java.util.ArrayList;
+import java.sql.ResultSet;
 
 public class CompraDao {
     private Connection con;
@@ -16,16 +18,8 @@ public class CompraDao {
         this.con = new ConnectFactory().getConnection();
     }
 
-    // Cadastra uma nova compra e atualiza o saldo do cliente
-    public void cadastrarCompra(Compras cp) {
-        
-        // SQL para inserir nova compra
+    public boolean cadastrarCompra(Compras cp) {
         String sqlCompra = "INSERT INTO Compras (Id_Cartao, Transacao, Valor_Compra, Estabelecimento, Descricao) VALUES (?, ?, ?, ?, ?)";
-
-        
-        // Atualiza saldo do cliente baseado no ID do cartão
-        
-        // SQL para atualizar o saldo do cliente vinculado ao cartão
         String sqlAtualizarSaldo = """
             UPDATE Cliente c
             JOIN Cartao ca ON c.Id_Cliente = ca.Id_Cliente
@@ -34,9 +28,7 @@ public class CompraDao {
         """;
 
         try {
-            con.setAutoCommit(false); // Começa transação
-
-            // Inserir a compra
+            con.setAutoCommit(false);
             try (PreparedStatement psCompra = con.prepareStatement(sqlCompra)) {
                 psCompra.setInt(1, cp.getIdCartao());
                 LocalDate data = cp.getTransacao();
@@ -44,33 +36,50 @@ public class CompraDao {
                 psCompra.setDouble(3, cp.getValorCompra());
                 psCompra.setString(4, cp.getEstabelecimento());
                 psCompra.setString(5, cp.getDescricao());
-
-                psCompra.executeUpdate(); // Executa a atualização
+                psCompra.executeUpdate();
             }
 
-            // Atualização do saldo do cliente
             try (PreparedStatement psSaldo = con.prepareStatement(sqlAtualizarSaldo)) {
                 psSaldo.setDouble(1, cp.getValorCompra());
                 psSaldo.setInt(2, cp.getIdCartao());
-
-                psSaldo.executeUpdate(); // Executa a atualização
+                psSaldo.executeUpdate();
             }
 
-            con.commit(); // Confirma todas as operações
-            JOptionPane.showMessageDialog(null, "Compra registrada e saldo atualizado com sucesso!");
+            con.commit();
+            return true;
         } catch (SQLException e) {
-            try {
-                con.rollback(); // Em caso de erro, desfaz as alterações
-            } catch (SQLException ex) {
-                JOptionPane.showMessageDialog(null, "Erro ao desfazer transação." + e.getMessage());
-            }
-            JOptionPane.showMessageDialog(null, "Erro ao registrar compra: " + e.getMessage());
+            try { con.rollback(); } catch (SQLException ex) { ex.printStackTrace(); }
+            e.printStackTrace();
+            return false;
         } finally {
-            try {
-                con.setAutoCommit(true); // Retorna ao modo automático de commit
-            } catch (SQLException e) {
-                JOptionPane.showMessageDialog(null, "Erro ao redefinir o modo de transação." + e.getMessage());
-            }
+            try { con.setAutoCommit(true); } catch (SQLException e) { e.printStackTrace(); }
         }
+    }
+
+    public List<Compras> listarComprasPorCliente(int idCliente) {
+        List<Compras> compras = new ArrayList<>();
+        String sql = """
+            SELECT cp.* 
+            FROM Compras cp
+            JOIN Cartao ca ON cp.Id_Cartao = ca.Id_Cartao
+            WHERE ca.Id_Cliente = ?
+            ORDER BY cp.Transacao DESC
+        """;
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, idCliente);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Compras c = new Compras();
+                    c.setIdCompra(rs.getInt("Id_Compra"));
+                    c.setIdCartao(rs.getInt("Id_Cartao"));
+                    c.setTransacao(rs.getDate("Transacao").toLocalDate());
+                    c.setValorCompra(rs.getDouble("Valor_Compra"));
+                    c.setEstabelecimento(rs.getString("Estabelecimento"));
+                    c.setDescricao(rs.getString("Descricao"));
+                    compras.add(c);
+                }
+            }
+        } catch (SQLException e) { e.printStackTrace(); }
+        return compras;
     }
 }

@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VaultBank - Painel Admin</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <nav class="navbar">
+    <a href="index.html" class="navbar__logo">Vault<span>Bank</span></a>
+    <div class="navbar__links">
+      <span style="color: var(--gold-400); font-weight: 600;">🔑 Admin</span>
+      <a href="#" onclick="Auth.logout(); return false;" class="btn btn-secondary btn-sm">Sair</a>
+    </div>
+  </nav>
+
+  <div class="dashboard">
+    <div class="dashboard__header fade-in-up">
+      <h1>Painel Administrativo 🔑</h1>
+      <p style="color: var(--text-muted);">Gerencie denúncias e reembolsos dos clientes</p>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-grid fade-in-up">
+      <div class="card stat-card">
+        <div class="stat-card__icon">👥</div>
+        <div class="stat-card__info"><h3 id="total-clientes">0</h3><p>Clientes Cadastrados</p></div>
+      </div>
+      <div class="card stat-card">
+        <div class="stat-card__icon">🚨</div>
+        <div class="stat-card__info"><h3 id="total-denuncias">0</h3><p>Denúncias Pendentes</p></div>
+      </div>
+      <div class="card stat-card">
+        <div class="stat-card__icon">💸</div>
+        <div class="stat-card__info"><h3 id="total-reembolsos">0</h3><p>Reembolsos Realizados</p></div>
+      </div>
+    </div>
+
+    <div class="dashboard-grid fade-in-up" style="animation-delay: 0.2s;">
+      <!-- Denúncias Pendentes -->
+      <div class="card">
+        <h2>🚨 Denúncias Pendentes</h2>
+        <div class="table-container">
+          <table>
+            <thead><tr><th>Cliente</th><th>Motivo</th><th>Valor</th><th>Status</th><th>Ações</th></tr></thead>
+            <tbody id="denuncias-tbody"></tbody>
+          </table>
+        </div>
+        <p id="no-denuncias" style="display:none; text-align:center; color:var(--text-muted); padding:2rem;">✅ Nenhuma denúncia pendente</p>
+      </div>
+
+      <!-- Histórico de Reembolsos -->
+      <div class="card">
+        <h2>📋 Histórico de Reembolsos</h2>
+        <div class="table-container">
+          <table>
+            <thead><tr><th>Cliente</th><th>Valor</th><th>Data</th></tr></thead>
+            <tbody id="historico-tbody"></tbody>
+          </table>
+        </div>
+        <p id="no-historico" style="display:none; text-align:center; color:var(--text-muted); padding:2rem;">Nenhum reembolso registrado</p>
+      </div>
+    </div>
+
+    <!-- All Clients -->
+    <div class="card fade-in-up" style="margin-top: 1.5rem; animation-delay: 0.3s;">
+      <h2>👥 Todos os Clientes</h2>
+      <div class="table-container">
+        <table>
+          <thead><tr><th>Nome</th><th>CPF</th><th>Email</th><th>Estado</th><th>Saldo</th><th>Tipo</th></tr></thead>
+          <tbody id="clientes-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer"><p>© 2026 VaultBank — Painel Administrativo</p></footer>
+
+  <script src="js/app.js"></script>
+  <script src="js/auth.js"></script>
+  <script>
+    if (!Auth.requireAdmin()) { /* redirected */ }
+
+    function loadAdmin() {
+      const clientes = DB.getClientes();
+      const pendentes = DB.getDenunciasPendentes();
+      const historico = DB.getHistoricoReembolsos();
+
+      document.getElementById('total-clientes').textContent = clientes.filter(c => !c.isAdmin).length;
+      document.getElementById('total-denuncias').textContent = pendentes.length;
+      document.getElementById('total-reembolsos').textContent = historico.length;
+
+      // Denúncias
+      const dtbody = document.getElementById('denuncias-tbody');
+      const noDen = document.getElementById('no-denuncias');
+      if (pendentes.length === 0) {
+        noDen.style.display = 'block';
+        dtbody.parentElement.style.display = 'none';
+      } else {
+        dtbody.innerHTML = pendentes.map(d => {
+          const cl = DB.getClienteById(d.idCliente);
+          const compra = DB.getCompras().find(c => c.id === d.idCompra);
+          const statusClass = d.status === 'Pendente' ? 'badge-warning' : 'badge-info';
+          return `<tr>
+            <td>${cl ? cl.nome : 'N/A'}</td>
+            <td>${d.motivo}</td>
+            <td style="font-weight:600;">${compra ? formatCurrency(compra.valor) : '-'}</td>
+            <td><span class="badge ${statusClass}">${d.status}</span></td>
+            <td>
+              <button class="btn btn-primary btn-sm" onclick="reembolsar(${d.id})" style="font-size:0.75rem; padding:0.3rem 0.8rem;">Reembolsar</button>
+              <button class="btn btn-danger btn-sm" onclick="cancelar(${d.id})" style="font-size:0.75rem; padding:0.3rem 0.8rem; margin-left:0.3rem;">Cancelar</button>
+            </td>
+          </tr>`;
+        }).join('');
+      }
+
+      // Histórico
+      const htbody = document.getElementById('historico-tbody');
+      const noHist = document.getElementById('no-historico');
+      if (historico.length === 0) {
+        noHist.style.display = 'block';
+        htbody.parentElement.style.display = 'none';
+      } else {
+        htbody.innerHTML = historico.map(h => {
+          const cl = DB.getClienteById(h.idCliente);
+          return `<tr>
+            <td>${cl ? cl.nome : 'N/A'}</td>
+            <td style="color:var(--success); font-weight:600;">+ ${formatCurrency(h.valor)}</td>
+            <td>${formatDate(h.data)}</td>
+          </tr>`;
+        }).join('');
+        noHist.style.display = 'none';
+        htbody.parentElement.style.display = '';
+      }
+
+      // Clientes
+      document.getElementById('clientes-tbody').innerHTML = clientes.map(c => `<tr>
+        <td>${c.nome}</td>
+        <td>${c.cpf}</td>
+        <td>${c.email}</td>
+        <td>${c.estado}</td>
+        <td style="font-weight:600;">${formatCurrency(c.saldo || 0)}</td>
+        <td><span class="badge ${c.isAdmin ? 'badge-danger' : 'badge-success'}">${c.isAdmin ? 'Admin' : 'Cliente'}</span></td>
+      </tr>`).join('');
+    }
+
+    function reembolsar(idDenuncia) {
+      if (!confirm('Confirmar reembolso para este cliente?')) return;
+      const result = DB.processarReembolso(idDenuncia);
+      if (result.success) {
+        showToast('Reembolso processado com sucesso!', 'success');
+        loadAdmin();
+      } else {
+        showToast(result.error, 'error');
+      }
+    }
+
+    function cancelar(idDenuncia) {
+      if (!confirm('Cancelar esta denúncia?')) return;
+      DB.cancelarDenuncia(idDenuncia);
+      showToast('Denúncia cancelada.', 'info');
+      loadAdmin();
+    }
+
+    loadAdmin();
+  </script>
+</body>
+</html>

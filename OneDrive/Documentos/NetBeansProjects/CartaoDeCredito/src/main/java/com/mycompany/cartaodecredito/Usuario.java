@@ -21,6 +21,6 @@ public class Usuario {
     }
 
     boolean isAdmin() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return this.isAdmin;
     }
 }

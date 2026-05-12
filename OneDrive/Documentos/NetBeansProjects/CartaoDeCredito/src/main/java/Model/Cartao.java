@@ -17,8 +17,6 @@ public class Cartao {
         this.IdCliente = IdCliente;
         this.NumerosCartao = NumerosCartao;
         this.Validade = Validade;
-        System.out.println("awd");
-
     }
 
     public int getIdCartao() {

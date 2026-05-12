@@ -430,7 +430,6 @@ public class TelaCadastro extends javax.swing.JFrame {
         cliente.setSaldo(BigDecimal.ZERO);
         cliente.setIsAdmin(false);
 
-        Cliente model = new Cliente();
         ClienteDao dao = new ClienteDao();
         dao.CadastrarUsuario(cliente);
         
