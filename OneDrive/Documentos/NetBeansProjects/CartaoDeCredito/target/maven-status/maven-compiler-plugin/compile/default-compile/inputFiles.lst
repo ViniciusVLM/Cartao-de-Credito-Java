@@ -4,11 +4,15 @@ C:\Users\Vinip\Documents\Cartao-de-Credito-Java\OneDrive\Documentos\NetBeansProj
 C:\Users\Vinip\Documents\Cartao-de-Credito-Java\OneDrive\Documentos\NetBeansProjects\CartaoDeCredito\src\main\java\com\mycompany\cartaodecredito\Usuario.java
 C:\Users\Vinip\Documents\Cartao-de-Credito-Java\OneDrive\Documentos\NetBeansProjects\CartaoDeCredito\src\main\java\Connect\ApiServer.java
 C:\Users\Vinip\Documents\Cartao-de-Credito-Java\OneDrive\Documentos\NetBeansProjects\CartaoDeCredito\src\main\java\Connect\ConnectFactory.java
+C:\Users\Vinip\Documents\Cartao-de-Credito-Java\OneDrive\Documentos\NetBeansProjects\CartaoDeCredito\src\main\java\Connect\DBCreationHelper.java
+C:\Users\Vinip\Documents\Cartao-de-Credito-Java\OneDrive\Documentos\NetBeansProjects\CartaoDeCredito\src\main\java\Connect\InstaladorNuvem.java
 C:\Users\Vinip\Documents\Cartao-de-Credito-Java\OneDrive\Documentos\NetBeansProjects\CartaoDeCredito\src\main\java\Dao\CartaoDao.java
 C:\Users\Vinip\Documents\Cartao-de-Credito-Java\OneDrive\Documentos\NetBeansProjects\CartaoDeCredito\src\main\java\Dao\ClienteDao.java
 C:\Users\Vinip\Documents\Cartao-de-Credito-Java\OneDrive\Documentos\NetBeansProjects\CartaoDeCredito\src\main\java\Dao\CompraDao.java
 C:\Users\Vinip\Documents\Cartao-de-Credito-Java\OneDrive\Documentos\NetBeansProjects\CartaoDeCredito\src\main\java\Dao\DenunciaDao.java
+C:\Users\Vinip\Documents\Cartao-de-Credito-Java\OneDrive\Documentos\NetBeansProjects\CartaoDeCredito\src\main\java\Dao\SolicitacaoLimiteDao.java
 C:\Users\Vinip\Documents\Cartao-de-Credito-Java\OneDrive\Documentos\NetBeansProjects\CartaoDeCredito\src\main\java\Model\Cartao.java
 C:\Users\Vinip\Documents\Cartao-de-Credito-Java\OneDrive\Documentos\NetBeansProjects\CartaoDeCredito\src\main\java\Model\Cliente.java
 C:\Users\Vinip\Documents\Cartao-de-Credito-Java\OneDrive\Documentos\NetBeansProjects\CartaoDeCredito\src\main\java\Model\Compras.java
 C:\Users\Vinip\Documents\Cartao-de-Credito-Java\OneDrive\Documentos\NetBeansProjects\CartaoDeCredito\src\main\java\Model\Denuncia.java
+C:\Users\Vinip\Documents\Cartao-de-Credito-Java\OneDrive\Documentos\NetBeansProjects\CartaoDeCredito\src\main\java\Model\SolicitacaoLimite.java

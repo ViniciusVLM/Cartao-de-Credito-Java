@@ -4,7 +4,7 @@ package Connect;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import javax.swing.JOptionPane;
+import java.sql.SQLException;
 
 public class ConnectFactory {
     public Connection getConnection() {
@@ -24,10 +24,10 @@ public class ConnectFactory {
             Class.forName("com.mysql.cj.jdbc.Driver"); 
             return DriverManager.getConnection(url, user, password);
         } catch (ClassNotFoundException e) {
-            JOptionPane.showMessageDialog(null, "Driver JDBC não encontrado: " + e.getMessage()); // Mensagem de erro pra caso não Conectar
+            System.err.println("Driver JDBC não encontrado: " + e.getMessage());
             return null;
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Erro de conexão: " + e.getMessage()); // Mensagem de erro pra caso não Conectar
+            System.err.println("Erro de conexão com o banco de dados: " + e.getMessage());
             return null;
         }
     }
