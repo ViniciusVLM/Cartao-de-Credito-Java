@@ -20,9 +20,7 @@
       <h1 id="greeting">Olá! 👋</h1>
       <p style="color: var(--text-muted);">Gerencie seu cartão e acompanhe seus gastos</p>
     </div>
-
-    <!-- Stats -->
-    <div class="stats-grid fade-in-up">
+<div class="stats-grid fade-in-up">
       <div class="card stat-card">
         <div class="stat-card__icon">💰</div>
         <div class="stat-card__info"><h3 id="saldo">R$ 0,00</h3><p>Saldo Disponível</p></div>
@@ -37,9 +35,15 @@
       </div>
     </div>
 
-    <div class="dashboard-grid fade-in-up" style="animation-delay: 0.2s;">
-      <!-- Credit Card -->
-      <div>
+    <div id="invoice-notification" style="display: none; margin-top: 1.5rem;" class="fade-in-up">
+      <div class="card" style="background: linear-gradient(135deg, #EF4444, #B91C1C); color: white;">
+        <h2 style="color: white; margin-bottom: 0.5rem;">🚨 Fatura Fechada</h2>
+        <p>Sua fatura fechou hoje. O valor total da fatura para o mês é: <strong id="fatura-valor" style="font-size: 1.25rem;">R$ 0,00</strong></p>
+      </div>
+    </div>
+
+    <div class="dashboard-grid fade-in-up" style="animation-delay: 0.2s; margin-top: 1.5rem;">
+<div>
         <div class="credit-card-display" id="card-display">
           <div class="card-brand">VaultBank</div>
           <div class="card-number" id="card-number">•••• •••• •••• ••••</div>
@@ -47,16 +51,13 @@
             <div class="card-name" id="card-name">—</div>
             <div class="card-expiry"><span>VALIDADE</span><span id="card-exp">--/--</span></div>
           </div>
-        </div>
-        <!-- Quick Actions -->
         <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
           <button class="btn btn-primary btn-sm" onclick="openCompraModal()" style="flex:1;">+ Nova Compra</button>
+          <button class="btn btn-primary btn-sm" onclick="openLimiteModal()" style="flex:1; background: var(--primary-600); border-color: var(--primary-600);">+ Aumentar Limite</button>
           <button class="btn btn-secondary btn-sm" onclick="openDenunciaModal()" style="flex:1;">🚨 Denunciar</button>
         </div>
       </div>
-
-      <!-- Transaction History -->
-      <div class="card">
+<div class="card">
         <h2>📊 Histórico de Compras</h2>
         <div class="table-container">
           <table>
@@ -68,9 +69,7 @@
       </div>
     </div>
   </div>
-
-  <!-- Modal: Nova Compra -->
-  <div class="modal-overlay" id="compra-modal">
+<div class="modal-overlay" id="compra-modal">
     <div class="modal">
       <h2>🛒 Registrar Compra</h2>
       <form id="compra-form">
@@ -99,9 +98,7 @@
       </form>
     </div>
   </div>
-
-  <!-- Modal: Denúncia -->
-  <div class="modal-overlay" id="denuncia-modal">
+<div class="modal-overlay" id="denuncia-modal">
     <div class="modal">
       <h2>🚨 Denunciar Compra</h2>
       <form id="denuncia-form">
@@ -125,49 +122,100 @@
       </form>
     </div>
   </div>
+<div class="modal-overlay" id="limite-modal">
+    <div class="modal">
+      <h2>📈 Solicitar Aumento de Limite</h2>
+      <form id="limite-form">
+        <div class="form-group">
+          <label>Valor Adicional Desejado (R$)</label>
+          <input type="number" step="0.01" min="10" class="form-control" id="lim-valor" placeholder="Ex: 500.00" required>
+        </div>
+        <div style="display:flex; gap:1rem; margin-top:1rem;">
+          <button type="submit" class="btn btn-primary" style="flex:1;">Solicitar</button>
+          <button type="button" class="btn btn-secondary" onclick="closeModal('limite-modal')" style="flex:1;">Cancelar</button>
+        </div>
+      </form>
+    </div>
+  </div>
 
   <footer class="footer"><p>© 2026 VaultBank — Seu dinheiro protegido.</p></footer>
 
   <script src="js/app.js"></script>
   <script src="js/auth.js"></script>
   <script>
-    if (!Auth.requireAuth()) { /* redirected */ }
+    if (!Auth.requireAuth()) {  }
     const user = Auth.getUser();
     if (user && user.isAdmin) { window.location.href = 'admin.html'; }
 
-    function loadDashboard() {
-      const u = Auth.getUser();
+    async function loadDashboard() {
+      const u = await Auth.getUser();
       if (!u) return;
       document.getElementById('greeting').textContent = `Olá, ${u.nome.split(' ')[0]}! 👋`;
       document.getElementById('saldo').textContent = formatCurrency(u.saldo || 0);
 
-      const cartoes = DB.getCartoesByCliente(u.id);
-      if (cartoes.length > 0) {
+      const cartoes = await DB.getCartoesByCliente(u.id);
+      if (cartoes && cartoes.length > 0) {
         const c = cartoes[0];
-        document.getElementById('card-number').textContent = c.numero;
+        document.getElementById('card-number').textContent = c.numero || c.numerosCartao || '•••• •••• •••• ••••';
         document.getElementById('card-name').textContent = u.nome.toUpperCase();
-        const [y, m] = c.validade.split('-');
-        document.getElementById('card-exp').textContent = `${m}/${y}`;
+        if(c.validade) {
+          const [y, m] = c.validade.split('-');
+          document.getElementById('card-exp').textContent = `${m}/${y}`;
+        }
       }
 
-      const compras = DB.getComprasByCliente(u.id);
+      const compras = await DB.getComprasByCliente(u.id);
       document.getElementById('total-compras').textContent = compras.length;
 
+      const resReembolsos = await fetch(`/api/reembolsos/${u.id}`);
+      const reembolsos = resReembolsos.ok ? await resReembolsos.json() : [];
+
       const now = new Date();
-      const gastoMes = compras.filter(c => { const d = new Date(c.transacao + 'T00:00:00'); return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear(); })
-        .reduce((sum, c) => sum + c.valor, 0);
+      let gastoMes = compras.filter(c => { const d = new Date(c.transacao + 'T00:00:00'); return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear(); })
+        .reduce((sum, c) => sum + (c.valor || c.valorCompra), 0);
+      
+      const reembolsoMes = reembolsos.filter(r => { const d = new Date(r.dataReembolso + 'T00:00:00'); return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear(); })
+        .reduce((sum, r) => sum + (r.valorReembolsado), 0);
+      
+      gastoMes = gastoMes - reembolsoMes;
+      if(gastoMes < 0) gastoMes = 0;
+
       document.getElementById('gasto-mes').textContent = formatCurrency(gastoMes);
+
+      if (new Date().getDate() === 30) {
+        document.getElementById('fatura-valor').textContent = formatCurrency(gastoMes);
+        document.getElementById('invoice-notification').style.display = 'block';
+      }
 
       const tbody = document.getElementById('compras-tbody');
       const noCompras = document.getElementById('no-compras');
-      if (compras.length === 0) { noCompras.style.display = 'block'; tbody.parentElement.style.display = 'none'; }
+      if (compras.length === 0 && reembolsos.length === 0) { noCompras.style.display = 'block'; tbody.parentElement.style.display = 'none'; }
       else {
-        const sorted = [...compras].sort((a, b) => new Date(b.transacao) - new Date(a.transacao));
-        tbody.innerHTML = sorted.map(c => `
+        noCompras.style.display = 'none';
+        tbody.parentElement.style.display = 'table';
+        
+        const txs = compras.map(c => ({
+          tipo: 'compra',
+          data: c.transacao,
+          desc: c.estabelecimento + '<br><small style="color:var(--text-muted)">' + c.descricao + '</small>',
+          valor: -(c.valor || c.valorCompra)
+        }));
+        
+        reembolsos.forEach(r => {
+          txs.push({
+            tipo: 'reembolso',
+            data: r.dataReembolso,
+            desc: 'Reembolso: ' + r.estabelecimento,
+            valor: r.valorReembolsado
+          });
+        });
+
+        const sorted = txs.sort((a, b) => new Date(b.data) - new Date(a.data));
+        tbody.innerHTML = sorted.map(t => `
           <tr>
-            <td>${formatDate(c.transacao)}</td>
-            <td>${c.estabelecimento}<br><small style="color:var(--text-muted)">${c.descricao}</small></td>
-            <td style="color: #EF4444; font-weight: 600;">- ${formatCurrency(c.valor)}</td>
+            <td>${formatDate(t.data)}</td>
+            <td>${t.desc}</td>
+            <td style="color: ${t.valor > 0 ? '#10B981' : '#EF4444'}; font-weight: 600;">${t.valor > 0 ? '+' : '-'} ${formatCurrency(Math.abs(t.valor))}</td>
           </tr>
         `).join('');
       }
@@ -178,46 +226,69 @@
       document.getElementById('compra-modal').classList.add('active');
     }
 
-    function openDenunciaModal() {
-      const compras = DB.getComprasByCliente(user.id);
+    function openLimiteModal() {
+      document.getElementById('limite-modal').classList.add('active');
+    }
+
+    async function openDenunciaModal() {
+      const u = Auth.getUserSync();
+      const compras = await DB.getComprasByCliente(u.id);
       const sel = document.getElementById('den-compra');
-      sel.innerHTML = compras.map(c => `<option value="${c.id}">${c.estabelecimento} — ${formatCurrency(c.valor)} (${formatDate(c.transacao)})</option>`).join('');
+      sel.innerHTML = compras.map(c => `<option value="${c.idCompra || c.id}">${c.estabelecimento} — ${formatCurrency(c.valor || c.valorCompra)} (${formatDate(c.transacao)})</option>`).join('');
       document.getElementById('denuncia-modal').classList.add('active');
     }
 
     function closeModal(id) { document.getElementById(id).classList.remove('active'); }
 
-    document.getElementById('compra-form').addEventListener('submit', function(e) {
+    document.getElementById('compra-form').addEventListener('submit', async function(e) {
       e.preventDefault();
-      const cartoes = DB.getCartoesByCliente(user.id);
-      if (!cartoes.length) { showToast('Nenhum cartão encontrado!', 'error'); return; }
-      DB.cadastrarCompra({
-        idCartao: cartoes[0].id,
+      const u = Auth.getUserSync();
+      const cartoes = await DB.getCartoesByCliente(u.id);
+      if (!cartoes || !cartoes.length) { showToast('Nenhum cartão encontrado!', 'error'); return; }
+      
+      const res = await DB.cadastrarCompra({
+        idCartao: cartoes[0].idCartao || cartoes[0].id,
         transacao: document.getElementById('comp-data').value,
-        valor: parseFloat(document.getElementById('comp-valor').value),
+        valorCompra: parseFloat(document.getElementById('comp-valor').value),
         estabelecimento: document.getElementById('comp-estab').value.trim(),
         descricao: document.getElementById('comp-desc').value.trim()
       });
+      
+      if(res.error) { showToast(res.error, 'error'); return; }
       showToast('Compra registrada com sucesso!', 'success');
       closeModal('compra-modal');
       this.reset();
       loadDashboard();
     });
 
-    document.getElementById('denuncia-form').addEventListener('submit', function(e) {
+    document.getElementById('denuncia-form').addEventListener('submit', async function(e) {
       e.preventDefault();
-      DB.cadastrarDenuncia({
+      const u = Auth.getUserSync();
+      const res = await DB.cadastrarDenuncia({
         idCompra: parseInt(document.getElementById('den-compra').value),
-        idCliente: user.id,
+        idCliente: u.id,
         dataDenuncia: new Date().toISOString().split('T')[0],
         motivo: document.getElementById('den-motivo').value
       });
+      if(res.error) { showToast(res.error, 'error'); return; }
       showToast('Denúncia enviada! O admin irá analisar.', 'success');
       closeModal('denuncia-modal');
       this.reset();
     });
 
-    // Close modal on overlay click
+    document.getElementById('limite-form').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const u = Auth.getUserSync();
+      const res = await DB.solicitarLimite({
+        idCliente: u.id,
+        valorSolicitado: parseFloat(document.getElementById('lim-valor').value)
+      });
+      if(res.error) { showToast(res.error, 'error'); return; }
+      showToast('Solicitação de aumento de limite enviada para análise!', 'success');
+      closeModal('limite-modal');
+      this.reset();
+    });
+
     document.querySelectorAll('.modal-overlay').forEach(m => {
       m.addEventListener('click', e => { if (e.target === m) m.classList.remove('active'); });
     });

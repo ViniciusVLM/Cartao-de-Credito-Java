@@ -95,4 +95,17 @@ public class ClienteDao {
         } catch (Exception e) { e.printStackTrace(); }
         return clientes;
     }
+
+    public boolean adicionarSaldo(int idCliente, double valorAdicional) {
+        String sql = "UPDATE Cliente SET Saldo = Saldo + ? WHERE Id_Cliente = ?";
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setDouble(1, valorAdicional);
+            ps.setInt(2, idCliente);
+            int rowsAffected = ps.executeUpdate();
+            return rowsAffected > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 }

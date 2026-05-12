@@ -51,9 +51,9 @@
             <div class="card-name" id="card-name">—</div>
             <div class="card-expiry"><span>VALIDADE</span><span id="card-exp">--/--</span></div>
           </div>
-        </div>
-<div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
+        <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
           <button class="btn btn-primary btn-sm" onclick="openCompraModal()" style="flex:1;">+ Nova Compra</button>
+          <button class="btn btn-primary btn-sm" onclick="openLimiteModal()" style="flex:1; background: var(--primary-600); border-color: var(--primary-600);">+ Aumentar Limite</button>
           <button class="btn btn-secondary btn-sm" onclick="openDenunciaModal()" style="flex:1;">🚨 Denunciar</button>
         </div>
       </div>
@@ -118,6 +118,21 @@
         <div style="display:flex; gap:1rem; margin-top:1rem;">
           <button type="submit" class="btn btn-danger" style="flex:1;">Enviar Denúncia</button>
           <button type="button" class="btn btn-secondary" onclick="closeModal('denuncia-modal')" style="flex:1;">Cancelar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+<div class="modal-overlay" id="limite-modal">
+    <div class="modal">
+      <h2>📈 Solicitar Aumento de Limite</h2>
+      <form id="limite-form">
+        <div class="form-group">
+          <label>Valor Adicional Desejado (R$)</label>
+          <input type="number" step="0.01" min="10" class="form-control" id="lim-valor" placeholder="Ex: 500.00" required>
+        </div>
+        <div style="display:flex; gap:1rem; margin-top:1rem;">
+          <button type="submit" class="btn btn-primary" style="flex:1;">Solicitar</button>
+          <button type="button" class="btn btn-secondary" onclick="closeModal('limite-modal')" style="flex:1;">Cancelar</button>
         </div>
       </form>
     </div>
@@ -211,6 +226,10 @@
       document.getElementById('compra-modal').classList.add('active');
     }
 
+    function openLimiteModal() {
+      document.getElementById('limite-modal').classList.add('active');
+    }
+
     async function openDenunciaModal() {
       const u = Auth.getUserSync();
       const compras = await DB.getComprasByCliente(u.id);
@@ -254,6 +273,19 @@
       if(res.error) { showToast(res.error, 'error'); return; }
       showToast('Denúncia enviada! O admin irá analisar.', 'success');
       closeModal('denuncia-modal');
+      this.reset();
+    });
+
+    document.getElementById('limite-form').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const u = Auth.getUserSync();
+      const res = await DB.solicitarLimite({
+        idCliente: u.id,
+        valorSolicitado: parseFloat(document.getElementById('lim-valor').value)
+      });
+      if(res.error) { showToast(res.error, 'error'); return; }
+      showToast('Solicitação de aumento de limite enviada para análise!', 'success');
+      closeModal('limite-modal');
       this.reset();
     });
 

@@ -4,10 +4,12 @@ import Dao.CartaoDao;
 import Dao.ClienteDao;
 import Dao.CompraDao;
 import Dao.DenunciaDao;
+import Dao.SolicitacaoLimiteDao;
 import Model.Cartao;
 import Model.Cliente;
 import Model.Compras;
 import Model.Denuncia;
+import Model.SolicitacaoLimite;
 import io.javalin.Javalin;
 import io.javalin.http.staticfiles.Location;
 import io.javalin.json.JavalinJackson;
@@ -36,6 +38,7 @@ public class ApiServer {
         CartaoDao cartaoDao = new CartaoDao();
         CompraDao compraDao = new CompraDao();
         DenunciaDao denunciaDao = new DenunciaDao();
+        SolicitacaoLimiteDao solicitacaoLimiteDao = new SolicitacaoLimiteDao();
 
         app.post("/api/login", ctx -> {
             Map<String, String> body = ctx.bodyAsClass(Map.class);
@@ -175,6 +178,50 @@ public class ApiServer {
                 ctx.json(response);
             } else {
                 ctx.status(404).result("Não encontrado");
+            }
+        });
+
+        // ================= ROTAS DE SOLICITAÇÃO DE LIMITE =================
+        app.post("/api/solicitacoes-limite", ctx -> {
+            Map<String, Object> body = ctx.bodyAsClass(Map.class);
+            SolicitacaoLimite s = new SolicitacaoLimite();
+            s.setIdCliente(((Number) body.get("idCliente")).intValue());
+            s.setValorSolicitado(((Number) body.get("valorSolicitado")).doubleValue());
+            s.setStatus("Pendente");
+            s.setDataSolicitacao(LocalDate.now());
+
+            if (solicitacaoLimiteDao.cadastrarSolicitacao(s)) {
+                ctx.status(201).result("Solicitação registrada");
+            } else {
+                ctx.status(400).result("Erro ao registrar solicitação");
+            }
+        });
+
+        app.get("/api/solicitacoes-limite/pendentes", ctx -> {
+            ctx.json(solicitacaoLimiteDao.listarPendentes());
+        });
+
+        app.post("/api/solicitacoes-limite/{id}/aprovar", ctx -> {
+            int id = Integer.parseInt(ctx.pathParam("id"));
+            SolicitacaoLimite solicitacao = solicitacaoLimiteDao.buscarPorId(id);
+            if (solicitacao != null && "Pendente".equals(solicitacao.getStatus())) {
+                if (solicitacaoLimiteDao.atualizarStatus(id, "Aprovado")) {
+                    clienteDao.adicionarSaldo(solicitacao.getIdCliente(), solicitacao.getValorSolicitado());
+                    ctx.status(200).result("Solicitação aprovada e limite atualizado.");
+                } else {
+                    ctx.status(400).result("Erro ao atualizar o status da solicitação.");
+                }
+            } else {
+                ctx.status(404).result("Solicitação não encontrada ou não está pendente.");
+            }
+        });
+
+        app.post("/api/solicitacoes-limite/{id}/negar", ctx -> {
+            int id = Integer.parseInt(ctx.pathParam("id"));
+            if (solicitacaoLimiteDao.atualizarStatus(id, "Negado")) {
+                ctx.status(200).result("Solicitação negada.");
+            } else {
+                ctx.status(400).result("Erro ao atualizar o status da solicitação.");
             }
         });
 

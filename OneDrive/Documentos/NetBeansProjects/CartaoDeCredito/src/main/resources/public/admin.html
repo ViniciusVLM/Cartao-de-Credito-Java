@@ -30,6 +30,10 @@
         <div class="stat-card__info"><h3 id="total-denuncias">0</h3><p>Denúncias Pendentes</p></div>
       </div>
       <div class="card stat-card">
+        <div class="stat-card__icon">📈</div>
+        <div class="stat-card__info"><h3 id="total-limites">0</h3><p>Limites Solicitados</p></div>
+      </div>
+      <div class="card stat-card">
         <div class="stat-card__icon">💸</div>
         <div class="stat-card__info"><h3 id="total-reembolsos">0</h3><p>Reembolsos Realizados</p></div>
       </div>
@@ -45,6 +49,16 @@
           </table>
         </div>
         <p id="no-denuncias" style="display:none; text-align:center; color:var(--text-muted); padding:2rem;">✅ Nenhuma denúncia pendente</p>
+      </div>
+      <div class="card">
+        <h2>📈 Solicitações de Aumento de Limite</h2>
+        <div class="table-container">
+          <table>
+            <thead><tr><th>Cliente ID</th><th>Valor Solicitado</th><th>Data</th><th>Ações</th></tr></thead>
+            <tbody id="limites-tbody"></tbody>
+          </table>
+        </div>
+        <p id="no-limites" style="display:none; text-align:center; color:var(--text-muted); padding:2rem;">✅ Nenhuma solicitação pendente</p>
       </div>
 
     </div>
@@ -69,10 +83,12 @@
     async function loadAdmin() {
       const clientes = await DB.getClientes() || [];
       const pendentes = await DB.getDenunciasPendentes() || [];
+      const limites = await DB.getSolicitacoesPendentes() || [];
       const historico = await DB.getTodosReembolsos() || [];
 
       document.getElementById('total-clientes').textContent = clientes.filter(c => !c.isAdmin).length;
       document.getElementById('total-denuncias').textContent = pendentes.length;
+      document.getElementById('total-limites').textContent = limites.length;
       document.getElementById('total-reembolsos').textContent = historico.length;
 
       const dtbody = document.getElementById('denuncias-tbody');
@@ -91,6 +107,27 @@
             <td>
               <button class="btn btn-primary btn-sm" onclick="reembolsar(${d.idDenuncia || d.id})" style="font-size:0.75rem; padding:0.3rem 0.8rem;">Reembolsar</button>
               <button class="btn btn-danger btn-sm" onclick="cancelar(${d.idDenuncia || d.id})" style="font-size:0.75rem; padding:0.3rem 0.8rem; margin-left:0.3rem;">Cancelar</button>
+            </td>
+          </tr>`;
+        }).join('');
+      }
+
+      const ltbody = document.getElementById('limites-tbody');
+      const noLim = document.getElementById('no-limites');
+      if (limites.length === 0) {
+        noLim.style.display = 'block';
+        ltbody.parentElement.style.display = 'none';
+      } else {
+        noLim.style.display = 'none';
+        ltbody.parentElement.style.display = 'table';
+        ltbody.innerHTML = limites.map(l => {
+          return `<tr>
+            <td>ID: ${l.idCliente}</td>
+            <td style="font-weight:600; color: #10B981;">+ ${formatCurrency(l.valorSolicitado)}</td>
+            <td>${formatDate(l.dataSolicitacao)}</td>
+            <td>
+              <button class="btn btn-primary btn-sm" onclick="aprovarLimite(${l.idSolicitacao})" style="font-size:0.75rem; padding:0.3rem 0.8rem;">Aprovar</button>
+              <button class="btn btn-danger btn-sm" onclick="negarLimite(${l.idSolicitacao})" style="font-size:0.75rem; padding:0.3rem 0.8rem; margin-left:0.3rem;">Negar</button>
             </td>
           </tr>`;
         }).join('');
@@ -122,6 +159,28 @@
       await DB.cancelarDenuncia(idDenuncia);
       showToast('Denúncia cancelada.', 'info');
       loadAdmin();
+    }
+
+    async function aprovarLimite(idSolicitacao) {
+      if (!confirm('Aprovar este aumento de limite?')) return;
+      const result = await DB.aprovarLimite(idSolicitacao);
+      if (result && !result.error) {
+        showToast('Limite aprovado com sucesso!', 'success');
+        loadAdmin();
+      } else {
+        showToast(result.error || 'Erro ao aprovar', 'error');
+      }
+    }
+
+    async function negarLimite(idSolicitacao) {
+      if (!confirm('Negar este aumento de limite?')) return;
+      const result = await DB.negarLimite(idSolicitacao);
+      if (result && !result.error) {
+        showToast('Solicitação negada.', 'info');
+        loadAdmin();
+      } else {
+        showToast(result.error || 'Erro ao negar', 'error');
+      }
     }
 
     loadAdmin();

@@ -71,6 +71,22 @@ const DB = {
 
   async cancelarDenuncia(idDenuncia) {
     return { success: true };
+  },
+
+  async solicitarLimite(data) {
+    return await this.req('/api/solicitacoes-limite', 'POST', data);
+  },
+
+  async getSolicitacoesPendentes() {
+    return await this.req('/api/solicitacoes-limite/pendentes');
+  },
+
+  async aprovarLimite(id) {
+    return await this.req(`/api/solicitacoes-limite/${id}/aprovar`, 'POST');
+  },
+
+  async negarLimite(id) {
+    return await this.req(`/api/solicitacoes-limite/${id}/negar`, 'POST');
   }
 };
 
