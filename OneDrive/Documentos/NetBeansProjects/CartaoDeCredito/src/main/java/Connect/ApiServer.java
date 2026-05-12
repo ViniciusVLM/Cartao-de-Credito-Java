@@ -225,7 +225,8 @@ public class ApiServer {
             }
         });
 
-        app.start(7071);
-        System.out.println("Servidor Web rodando em: http://localhost:7071");
+        int porta = System.getenv("PORT") != null ? Integer.parseInt(System.getenv("PORT")) : 7071;
+        app.start(porta);
+        System.out.println("Servidor Web rodando na porta: " + porta);
     }
 }
