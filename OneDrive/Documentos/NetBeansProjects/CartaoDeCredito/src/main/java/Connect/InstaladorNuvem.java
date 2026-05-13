@@ -90,7 +90,17 @@ public class InstaladorNuvem {
                     "Data_Solicitacao DATE, " +
                     "FOREIGN KEY (Id_Cliente) REFERENCES Cliente(Id_Cliente))");
 
-            System.out.println("Todas as tabelas foram criadas com sucesso na nuvem!");
+            // Inserindo Conta Admin Padrão
+            String adminQuery = "INSERT IGNORE INTO Cliente (Nome, CPF, Senha, isAdmin, Saldo) " +
+                                "VALUES ('Administrador VaultBank', '000.000.000-00', 'admin123', TRUE, 0)";
+            stmt.execute(adminQuery);
+
+            // Inserindo Conta de Usuário Padrão
+            String userQuery = "INSERT IGNORE INTO Cliente (Nome, CPF, Senha, isAdmin, Saldo) " +
+                               "VALUES ('Usuario Teste', '123.456.789-00', 'senha123', FALSE, 2000.0)";
+            stmt.execute(userQuery);
+
+            System.out.println("Todas as tabelas e os usuários de demonstração foram criados com sucesso na nuvem!");
             con.close();
 
         } catch (Exception e) {

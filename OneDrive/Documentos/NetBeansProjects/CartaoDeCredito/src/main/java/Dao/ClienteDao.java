@@ -59,7 +59,10 @@ public class ClienteDao {
                 c.setRG(rs.getString("RG"));
                 c.setEmail(rs.getString("Email"));
                 c.setTelefone(rs.getString("Telefone"));
-                c.setDataNascimento(rs.getDate("Data_Nascimento").toLocalDate());
+                java.sql.Date dataNasc = rs.getDate("Data_Nascimento");
+                if (dataNasc != null) {
+                    c.setDataNascimento(dataNasc.toLocalDate());
+                }
                 c.setNacionalidade(rs.getString("Nacionalidade"));
                 c.setCEP(rs.getString("CEP"));
                 c.setEstado(rs.getString("Estado"));

@@ -16,10 +16,11 @@ public class ConnectFactory {
 
             // Se não encontrar as variáveis (rodando no PC local), usa os valores padrão do XAMPP
             if (url == null || url.isEmpty()) {
-                url = "jdbc:mysql://localhost:3306/vaultbank?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=America/Sao_Paulo";
-                user = "root";
-                password = "";
+                url = "jdbc:mysql://mysql-26e4b110-vini172006v-804f.f.aivencloud.com:13291/defaultdb?sslMode=REQUIRED";
+                user = "avnadmin";
+                password = "SUA_SENHA_AQUI";
             }
+
 
             Class.forName("com.mysql.cj.jdbc.Driver"); 
             return DriverManager.getConnection(url, user, password);
