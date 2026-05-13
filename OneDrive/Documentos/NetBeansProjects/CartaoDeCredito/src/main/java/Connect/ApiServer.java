@@ -40,6 +40,26 @@ public class ApiServer {
         DenunciaDao denunciaDao = new DenunciaDao();
         SolicitacaoLimiteDao solicitacaoLimiteDao = new SolicitacaoLimiteDao();
 
+        // Inicializa contas padrão se não existirem
+        if (clienteDao.autenticar("000.000.000-00", "admin123") == null) {
+            Cliente admin = new Cliente();
+            admin.setNome("Administrador VaultBank");
+            admin.setCPF("000.000.000-00");
+            admin.setSenha("admin123");
+            admin.setIsAdmin(true);
+            admin.setSaldo(new java.math.BigDecimal("0.0"));
+            try { clienteDao.CadastrarUsuario(admin); System.out.println("Conta Admin criada."); } catch(Exception e) {}
+        }
+        if (clienteDao.autenticar("123.456.789-00", "senha123") == null) {
+            Cliente user = new Cliente();
+            user.setNome("Usuario Teste");
+            user.setCPF("123.456.789-00");
+            user.setSenha("senha123");
+            user.setIsAdmin(false);
+            user.setSaldo(new java.math.BigDecimal("2000.0"));
+            try { clienteDao.CadastrarUsuario(user); System.out.println("Conta Usuário de teste criada."); } catch(Exception e) {}
+        }
+
         app.post("/api/login", ctx -> {
             Map<String, String> body = ctx.bodyAsClass(Map.class);
             String cpf = body.get("cpf");
