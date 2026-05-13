@@ -52,11 +52,11 @@
       e.target.value = v;
     });
 
-    document.getElementById('login-form').addEventListener('submit', function(e) {
+    document.getElementById('login-form').addEventListener('submit', async function(e) {
       e.preventDefault();
       const cpf = document.getElementById('cpf').value.trim();
       const senha = document.getElementById('senha').value;
-      const user = Auth.login(cpf, senha);
+      const user = await Auth.login(cpf, senha);
       if (user) {
         showToast('Login realizado com sucesso!', 'success');
         setTimeout(() => {

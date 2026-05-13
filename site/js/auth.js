@@ -1,7 +1,7 @@
 // ===== Auth Module =====
 const Auth = {
-  login(cpf, senha) {
-    const user = DB.autenticar(cpf, senha);
+  async login(cpf, senha) {
+    const user = await DB.autenticar(cpf, senha);
     if (user) {
       sessionStorage.setItem('vb_user', JSON.stringify(user));
       return user;
@@ -17,10 +17,11 @@ const Auth = {
   getUser() {
     const data = sessionStorage.getItem('vb_user');
     if (!data) return null;
-    const cached = JSON.parse(data);
-    // Refresh from DB for latest saldo
-    const fresh = DB.getClienteById(cached.id);
-    return fresh || cached;
+    return JSON.parse(data);
+  },
+
+  getUserSync() {
+    return this.getUser();
   },
 
   isLoggedIn() { return !!this.getUser(); },
