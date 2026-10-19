@@ -1,0 +1,10 @@
+﻿target/
+*.class
+*.jar
+dependency-reduced-pom.xml
+nbproject/private/
+.idea/
+.vscode/
+*.log
+.env
+Cartao-de-Credito-Java/
