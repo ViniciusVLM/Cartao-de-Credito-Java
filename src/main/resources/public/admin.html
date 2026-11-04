@@ -3,77 +3,67 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>VaultBank - Painel Admin</title>
+  <title>Administração | VaultBank</title>
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
   <nav class="navbar">
-    <a href="index.html" class="navbar__logo">Vault<span>Bank</span></a>
+    <a href="index.html" class="navbar__logo"><svg viewBox="0 0 40 40" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2"><ellipse cx="20" cy="20" rx="17" ry="6.5"/><ellipse cx="20" cy="20" rx="17" ry="6.5" transform="rotate(60 20 20)"/><ellipse cx="20" cy="20" rx="17" ry="6.5" transform="rotate(-60 20 20)"/><circle cx="20" cy="20" r="3.4" fill="#FFB84D" stroke="none"/></svg>Vault<span>Bank</span></a>
     <div class="navbar__links">
-      <span style="color: var(--gold-400); font-weight: 600;">🔑 Admin</span>
+      <span class="navbar__tag">Administração</span>
       <a href="#" onclick="Auth.logout(); return false;" class="btn btn-secondary btn-sm">Sair</a>
     </div>
   </nav>
 
-  <div class="dashboard">
-    <div class="dashboard__header fade-in-up">
-      <h1>Painel Administrativo 🔑</h1>
-      <p style="color: var(--text-muted);">Gerencie denúncias e reembolsos dos clientes</p>
-    </div>
-<div class="stats-grid fade-in-up">
-      <div class="card stat-card">
-        <div class="stat-card__icon">👥</div>
-        <div class="stat-card__info"><h3 id="total-clientes">0</h3><p>Clientes Cadastrados</p></div>
-      </div>
-      <div class="card stat-card">
-        <div class="stat-card__icon">🚨</div>
-        <div class="stat-card__info"><h3 id="total-denuncias">0</h3><p>Denúncias Pendentes</p></div>
-      </div>
-      <div class="card stat-card">
-        <div class="stat-card__icon">📈</div>
-        <div class="stat-card__info"><h3 id="total-limites">0</h3><p>Limites Solicitados</p></div>
-      </div>
-      <div class="card stat-card">
-        <div class="stat-card__icon">💸</div>
-        <div class="stat-card__info"><h3 id="total-reembolsos">0</h3><p>Reembolsos Realizados</p></div>
-      </div>
+  <main class="dashboard">
+    <div class="dashboard__header">
+      <h1>Administração</h1>
+      <p>Contestações e pedidos de limite aguardando decisão.</p>
     </div>
 
-    <div class="dashboard-grid fade-in-up" style="animation-delay: 0.2s;">
-<div class="card">
-        <h2>🚨 Denúncias Pendentes</h2>
+    <div class="stats-grid">
+      <div class="stat-card"><h3 id="total-clientes">0</h3><p>Clientes</p></div>
+      <div class="stat-card"><h3 id="total-denuncias">0</h3><p>Contestações abertas</p></div>
+      <div class="stat-card"><h3 id="total-limites">0</h3><p>Pedidos de limite</p></div>
+      <div class="stat-card"><h3 id="total-reembolsos">0</h3><p>Reembolsos feitos</p></div>
+    </div>
+
+    <div class="admin-grid">
+      <section class="painel">
+        <h2>Contestações abertas</h2>
         <div class="table-container">
           <table>
-            <thead><tr><th>Cliente</th><th>Motivo</th><th>Valor</th><th>Status</th><th>Ações</th></tr></thead>
+            <thead><tr><th>Cliente</th><th>Motivo</th><th class="col-valor">Valor</th><th>Status</th><th></th></tr></thead>
             <tbody id="denuncias-tbody"></tbody>
           </table>
         </div>
-        <p id="no-denuncias" style="display:none; text-align:center; color:var(--text-muted); padding:2rem;">✅ Nenhuma denúncia pendente</p>
-      </div>
-      <div class="card">
-        <h2>📈 Solicitações de Aumento de Limite</h2>
+        <p id="no-denuncias" class="vazio" style="display:none;">Nenhuma contestação aguardando análise.</p>
+      </section>
+
+      <section class="painel">
+        <h2>Pedidos de aumento de limite</h2>
         <div class="table-container">
           <table>
-            <thead><tr><th>Cliente ID</th><th>Valor Solicitado</th><th>Data</th><th>Ações</th></tr></thead>
+            <thead><tr><th>Cliente</th><th class="col-valor">Valor pedido</th><th>Data</th><th></th></tr></thead>
             <tbody id="limites-tbody"></tbody>
           </table>
         </div>
-        <p id="no-limites" style="display:none; text-align:center; color:var(--text-muted); padding:2rem;">✅ Nenhuma solicitação pendente</p>
-      </div>
-
+        <p id="no-limites" class="vazio" style="display:none;">Nenhum pedido aguardando análise.</p>
+      </section>
     </div>
-<div class="card fade-in-up" style="margin-top: 1.5rem; animation-delay: 0.3s;">
-      <h2>👥 Todos os Clientes</h2>
+
+    <section class="painel">
+      <h2>Clientes</h2>
       <div class="table-container">
         <table>
-          <thead><tr><th>Nome</th><th>CPF</th><th>Email</th><th>Estado</th><th>Saldo</th><th>Tipo</th></tr></thead>
+          <thead><tr><th>Nome</th><th>CPF</th><th>E-mail</th><th>UF</th><th class="col-valor">Saldo</th><th>Tipo</th></tr></thead>
           <tbody id="clientes-tbody"></tbody>
         </table>
       </div>
-    </div>
-  </div>
+    </section>
+  </main>
 
-  <footer class="footer"><p>© 2026 VaultBank — Painel Administrativo</p></footer>
+  <footer class="footer"><p>© 2026 VaultBank. Painel administrativo.</p></footer>
 
   <script src="js/app.js"></script>
   <script src="js/auth.js"></script>
@@ -95,18 +85,21 @@
       const noDen = document.getElementById('no-denuncias');
       if (pendentes.length === 0) {
         noDen.style.display = 'block';
-        dtbody.parentElement.style.display = 'none';
+        dtbody.closest('table').style.display = 'none';
       } else {
+        noDen.style.display = 'none';
+        dtbody.closest('table').style.display = 'table';
         dtbody.innerHTML = pendentes.map(d => {
           const statusClass = d.status === 'Pendente' ? 'badge-warning' : 'badge-info';
+          const id = d.idDenuncia || d.id;
           return `<tr>
             <td>${d.nomeCliente || 'N/A'}</td>
             <td>${d.motivo}</td>
-            <td style="font-weight:600;">${formatCurrency(d.valorCompra || 0)}</td>
+            <td class="col-valor">${formatCurrency(d.valorCompra || 0)}</td>
             <td><span class="badge ${statusClass}">${d.status}</span></td>
-            <td>
-              <button class="btn btn-primary btn-sm" onclick="reembolsar(${d.idDenuncia || d.id})" style="font-size:0.75rem; padding:0.3rem 0.8rem;">Reembolsar</button>
-              <button class="btn btn-danger btn-sm" onclick="cancelar(${d.idDenuncia || d.id})" style="font-size:0.75rem; padding:0.3rem 0.8rem; margin-left:0.3rem;">Cancelar</button>
+            <td class="td-acoes">
+              <button class="btn btn-primary btn-sm" onclick="reembolsar(${id})">Reembolsar</button>
+              <button class="btn btn-secondary btn-sm" onclick="cancelar(${id})">Recusar</button>
             </td>
           </tr>`;
         }).join('');
@@ -116,48 +109,46 @@
       const noLim = document.getElementById('no-limites');
       if (limites.length === 0) {
         noLim.style.display = 'block';
-        ltbody.parentElement.style.display = 'none';
+        ltbody.closest('table').style.display = 'none';
       } else {
         noLim.style.display = 'none';
-        ltbody.parentElement.style.display = 'table';
-        ltbody.innerHTML = limites.map(l => {
-          return `<tr>
-            <td>ID: ${l.idCliente}</td>
-            <td style="font-weight:600; color: #10B981;">+ ${formatCurrency(l.valorSolicitado)}</td>
-            <td>${formatDate(l.dataSolicitacao)}</td>
-            <td>
-              <button class="btn btn-primary btn-sm" onclick="aprovarLimite(${l.idSolicitacao})" style="font-size:0.75rem; padding:0.3rem 0.8rem;">Aprovar</button>
-              <button class="btn btn-danger btn-sm" onclick="negarLimite(${l.idSolicitacao})" style="font-size:0.75rem; padding:0.3rem 0.8rem; margin-left:0.3rem;">Negar</button>
+        ltbody.closest('table').style.display = 'table';
+        ltbody.innerHTML = limites.map(l => `<tr>
+            <td class="num">Nº ${l.idCliente}</td>
+            <td class="col-valor valor-pos">+ ${formatCurrency(l.valorSolicitado)}</td>
+            <td class="num">${formatDate(l.dataSolicitacao)}</td>
+            <td class="td-acoes">
+              <button class="btn btn-primary btn-sm" onclick="aprovarLimite(${l.idSolicitacao})">Aprovar</button>
+              <button class="btn btn-secondary btn-sm" onclick="negarLimite(${l.idSolicitacao})">Negar</button>
             </td>
-          </tr>`;
-        }).join('');
+          </tr>`).join('');
       }
 
       document.getElementById('clientes-tbody').innerHTML = clientes.map(c => `<tr>
         <td>${c.nome}</td>
-        <td>${c.cpf}</td>
+        <td class="num">${c.cpf}</td>
         <td>${c.email}</td>
         <td>${c.estado}</td>
-        <td style="font-weight:600;">${formatCurrency(c.saldo || 0)}</td>
-        <td><span class="badge ${c.isAdmin ? 'badge-danger' : 'badge-success'}">${c.isAdmin ? 'Admin' : 'Cliente'}</span></td>
+        <td class="col-valor">${formatCurrency(c.saldo || 0)}</td>
+        <td><span class="badge ${c.isAdmin ? 'badge-info' : 'badge-success'}">${c.isAdmin ? 'Admin' : 'Cliente'}</span></td>
       </tr>`).join('');
     }
 
     async function reembolsar(idDenuncia) {
-      if (!confirm('Confirmar reembolso para este cliente?')) return;
+      if (!confirm('Reembolsar o valor desta compra ao cliente?')) return;
       const result = await DB.processarReembolso(idDenuncia);
       if (result && !result.error) {
-        showToast('Reembolso processado com sucesso!', 'success');
+        showToast('Reembolso feito. O valor voltou para o saldo do cliente.', 'success');
         loadAdmin();
       } else {
-        showToast(result.error || 'Erro ao processar reembolso', 'error');
+        showToast((result && result.error) || 'Não foi possível reembolsar. Tente de novo.', 'error');
       }
     }
 
     async function cancelar(idDenuncia) {
-      if (!confirm('Cancelar esta denúncia?')) return;
+      if (!confirm('Recusar esta contestação?')) return;
       await DB.cancelarDenuncia(idDenuncia);
-      showToast('Denúncia cancelada.', 'info');
+      showToast('Contestação recusada.', 'info');
       loadAdmin();
     }
 
@@ -165,10 +156,10 @@
       if (!confirm('Aprovar este aumento de limite?')) return;
       const result = await DB.aprovarLimite(idSolicitacao);
       if (result && !result.error) {
-        showToast('Limite aprovado com sucesso!', 'success');
+        showToast('Limite aprovado.', 'success');
         loadAdmin();
       } else {
-        showToast(result.error || 'Erro ao aprovar', 'error');
+        showToast((result && result.error) || 'Não foi possível aprovar. Tente de novo.', 'error');
       }
     }
 
@@ -176,10 +167,10 @@
       if (!confirm('Negar este aumento de limite?')) return;
       const result = await DB.negarLimite(idSolicitacao);
       if (result && !result.error) {
-        showToast('Solicitação negada.', 'info');
+        showToast('Pedido negado.', 'info');
         loadAdmin();
       } else {
-        showToast(result.error || 'Erro ao negar', 'error');
+        showToast((result && result.error) || 'Não foi possível negar. Tente de novo.', 'error');
       }
     }
 

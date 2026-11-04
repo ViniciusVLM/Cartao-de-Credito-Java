@@ -9,7 +9,7 @@ const DB = {
         return { error: text || 'Erro na requisição' };
       }
       if (res.status === 201 || res.status === 204) return { success: true };
-      
+
       const text = await res.text();
       try {
         return text ? JSON.parse(text) : { success: true };
@@ -92,13 +92,18 @@ const DB = {
 
 function showToast(msg, type = 'info') {
   let container = document.querySelector('.toast-container');
-  if (!container) { container = document.createElement('div'); container.className = 'toast-container'; document.body.appendChild(container); }
-  const icons = { success: '✅', error: '❌', info: 'ℹ️' };
+  if (!container) {
+    container = document.createElement('div');
+    container.className = 'toast-container';
+    container.setAttribute('role', 'status');
+    container.setAttribute('aria-live', 'polite');
+    document.body.appendChild(container);
+  }
   const toast = document.createElement('div');
   toast.className = `toast ${type}`;
-  toast.innerHTML = `<span>${icons[type] || ''}</span><span>${msg}</span>`;
+  toast.textContent = msg;
   container.appendChild(toast);
-  setTimeout(() => { toast.style.opacity = '0'; toast.style.transform = 'translateX(100px)'; setTimeout(() => toast.remove(), 300); }, 3500);
+  setTimeout(() => { toast.style.opacity = '0'; toast.style.transform = 'translateY(8px)'; setTimeout(() => toast.remove(), 300); }, 3500);
 }
 
 function formatCurrency(val) {
