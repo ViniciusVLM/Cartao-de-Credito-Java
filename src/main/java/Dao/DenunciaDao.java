@@ -1,11 +1,11 @@
 package Dao;
 
-import Connect.ConnectFactory;
 import Model.Denuncia;
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.time.LocalDate;
+import java.sql.Timestamp;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,20 +13,20 @@ import java.util.Map;
 import java.util.HashMap;
 
 public class DenunciaDao {
-    private Connection con;
+    private final DataSource dataSource;
 
-    public DenunciaDao() {
-        this.con = new ConnectFactory().getConnection();
+    public DenunciaDao(DataSource dataSource) {
+        this.dataSource = dataSource;
     }
 
     public boolean cadastrarDenuncia(Denuncia d) {
         String sql = "INSERT INTO Denuncia (Id_Compra, Id_Cliente, Data_Denuncia, Motivo) VALUES (?, ?, ?, ?)";
 
-        try (PreparedStatement ps = con.prepareStatement(sql)) {
+        try (Connection con = dataSource.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, d.getIdCompra());
             ps.setInt(2, d.getIdCliente());
-            LocalDate data = d.getDataDenuncia();
-            ps.setDate(3, java.sql.Date.valueOf(data));
+            ps.setTimestamp(3, Timestamp.valueOf(d.getDataDenuncia().atStartOfDay()));
             ps.setString(4, d.getMotivo());
 
             ps.execute();
@@ -36,7 +36,7 @@ public class DenunciaDao {
             return false;
         }
     }
-    
+
     public boolean processarReembolso(int idDenuncia) {
         String query_AtualizaSaldo = """
             UPDATE Cliente c
@@ -45,35 +45,35 @@ public class DenunciaDao {
             SET c.Saldo = c.Saldo + cp.Valor_Compra
             WHERE d.Id_Denuncia = ? AND d.Status = 'Pendente';
         """;
-        
+
         String insere_Historico = """
             INSERT INTO HistoricoReembolso (Id_Cliente, Id_Compra, Valor_Reembolsado, Data_Reembolso)
-            SELECT d.Id_Cliente, d.Id_Compra, cp.Valor_Compra, CURDATE()
+            SELECT d.Id_Cliente, d.Id_Compra, cp.Valor_Compra, NOW()
             FROM Denuncia d
             JOIN Compras cp ON d.Id_Compra = cp.Id_Compra
             WHERE d.Id_Denuncia = ?;
         """;
-        
+
         String atualiza_Status_Denuncia = """
             UPDATE Denuncia
             SET Status = 'Resolvida'
             WHERE Id_Denuncia = ?;
         """;
-        
-        try (Connection con = new ConnectFactory().getConnection()) {
+
+        try (Connection con = dataSource.getConnection()) {
             con.setAutoCommit(false);
             try (PreparedStatement ps1 = con.prepareStatement(query_AtualizaSaldo);
                  PreparedStatement ps2 = con.prepareStatement(insere_Historico);
                  PreparedStatement ps3 = con.prepareStatement(atualiza_Status_Denuncia)) {
-                
+
                 ps1.setInt(1, idDenuncia);
                 ps2.setInt(1, idDenuncia);
                 ps3.setInt(1, idDenuncia);
-                
+
                 ps1.executeUpdate();
                 ps2.executeUpdate();
                 ps3.executeUpdate();
-                
+
                 con.commit();
                 return true;
             } catch (Exception e) {
@@ -86,8 +86,7 @@ public class DenunciaDao {
             return false;
         }
     }
-    
-    
+
     public List<Map<String, Object>> listarDenunciasPendentes() {
         List<Map<String, Object>> lista = new ArrayList<>();
         String sql = """
@@ -99,7 +98,7 @@ public class DenunciaDao {
             ORDER BY d.Id_Denuncia
         """;
 
-        try (Connection con = new ConnectFactory().getConnection();
+        try (Connection con = dataSource.getConnection();
              PreparedStatement ps = con.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
 
@@ -118,6 +117,7 @@ public class DenunciaDao {
         }
         return lista;
     }
+
     public List<Map<String, Object>> listarReembolsosPorCliente(int idCliente) {
         List<Map<String, Object>> lista = new ArrayList<>();
         String sql = """
@@ -127,9 +127,9 @@ public class DenunciaDao {
             WHERE hr.Id_Cliente = ?
         """;
 
-        try (Connection con = new ConnectFactory().getConnection();
+        try (Connection con = dataSource.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
-            
+
             ps.setInt(1, idCliente);
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
@@ -137,7 +137,8 @@ public class DenunciaDao {
                     map.put("idReembolso", rs.getInt("Id_Reembolso"));
                     map.put("idCompra", rs.getInt("Id_Compra"));
                     map.put("valorReembolsado", rs.getDouble("Valor_Reembolsado"));
-                    map.put("dataReembolso", rs.getDate("Data_Reembolso").toString());
+                    Timestamp ts = rs.getTimestamp("Data_Reembolso");
+                    map.put("dataReembolso", ts != null ? ts.toLocalDateTime().toLocalDate().toString() : "");
                     map.put("estabelecimento", rs.getString("Estabelecimento"));
                     lista.add(map);
                 }
@@ -152,17 +153,18 @@ public class DenunciaDao {
         List<Map<String, Object>> lista = new ArrayList<>();
         String sql = "SELECT * FROM HistoricoReembolso";
 
-        try (Connection con = new ConnectFactory().getConnection();
+        try (Connection con = dataSource.getConnection();
              PreparedStatement ps = con.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
-            
+
             while (rs.next()) {
                 Map<String, Object> map = new HashMap<>();
                 map.put("idReembolso", rs.getInt("Id_Reembolso"));
                 map.put("idCliente", rs.getInt("Id_Cliente"));
                 map.put("idCompra", rs.getInt("Id_Compra"));
                 map.put("valorReembolsado", rs.getDouble("Valor_Reembolsado"));
-                map.put("dataReembolso", rs.getDate("Data_Reembolso").toString());
+                Timestamp ts = rs.getTimestamp("Data_Reembolso");
+                map.put("dataReembolso", ts != null ? ts.toLocalDateTime().toLocalDate().toString() : "");
                 lista.add(map);
             }
         } catch (SQLException e) {
@@ -170,5 +172,4 @@ public class DenunciaDao {
         }
         return lista;
     }
-    
 }

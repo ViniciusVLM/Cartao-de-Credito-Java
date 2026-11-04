@@ -1,21 +1,20 @@
 package Dao;
 
-import Connect.ConnectFactory;
 import Model.Compras;
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.time.LocalDate;
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.ArrayList;
 import java.sql.ResultSet;
 
 public class CompraDao {
-    private Connection con;
+    private final DataSource dataSource;
 
-     // Construtor que obtém a conexão com o banco de dados
-    public CompraDao() {
-        this.con = new ConnectFactory().getConnection();
+    public CompraDao(DataSource dataSource) {
+        this.dataSource = dataSource;
     }
 
     public boolean cadastrarCompra(Compras cp) {
@@ -27,32 +26,34 @@ public class CompraDao {
             WHERE ca.Id_Cartao = ?;
         """;
 
-        try {
+        try (Connection con = dataSource.getConnection()) {
             con.setAutoCommit(false);
-            try (PreparedStatement psCompra = con.prepareStatement(sqlCompra)) {
-                psCompra.setInt(1, cp.getIdCartao());
-                LocalDate data = cp.getTransacao();
-                psCompra.setDate(2, java.sql.Date.valueOf(data));
-                psCompra.setDouble(3, cp.getValorCompra());
-                psCompra.setString(4, cp.getEstabelecimento());
-                psCompra.setString(5, cp.getDescricao());
-                psCompra.executeUpdate();
-            }
+            try {
+                try (PreparedStatement psCompra = con.prepareStatement(sqlCompra)) {
+                    psCompra.setInt(1, cp.getIdCartao());
+                    psCompra.setTimestamp(2, Timestamp.valueOf(cp.getTransacao().atStartOfDay()));
+                    psCompra.setDouble(3, cp.getValorCompra());
+                    psCompra.setString(4, cp.getEstabelecimento());
+                    psCompra.setString(5, cp.getDescricao());
+                    psCompra.executeUpdate();
+                }
 
-            try (PreparedStatement psSaldo = con.prepareStatement(sqlAtualizarSaldo)) {
-                psSaldo.setDouble(1, cp.getValorCompra());
-                psSaldo.setInt(2, cp.getIdCartao());
-                psSaldo.executeUpdate();
-            }
+                try (PreparedStatement psSaldo = con.prepareStatement(sqlAtualizarSaldo)) {
+                    psSaldo.setDouble(1, cp.getValorCompra());
+                    psSaldo.setInt(2, cp.getIdCartao());
+                    psSaldo.executeUpdate();
+                }
 
-            con.commit();
-            return true;
+                con.commit();
+                return true;
+            } catch (SQLException e) {
+                try { con.rollback(); } catch (SQLException ex) { ex.printStackTrace(); }
+                e.printStackTrace();
+                return false;
+            }
         } catch (SQLException e) {
-            try { con.rollback(); } catch (SQLException ex) { ex.printStackTrace(); }
             e.printStackTrace();
             return false;
-        } finally {
-            try { con.setAutoCommit(true); } catch (SQLException e) { e.printStackTrace(); }
         }
     }
 
@@ -65,14 +66,18 @@ public class CompraDao {
             WHERE ca.Id_Cliente = ?
             ORDER BY cp.Transacao DESC
         """;
-        try (PreparedStatement ps = con.prepareStatement(sql)) {
+        try (Connection con = dataSource.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, idCliente);
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     Compras c = new Compras();
                     c.setIdCompra(rs.getInt("Id_Compra"));
                     c.setIdCartao(rs.getInt("Id_Cartao"));
-                    c.setTransacao(rs.getDate("Transacao").toLocalDate());
+                    Timestamp ts = rs.getTimestamp("Transacao");
+                    if (ts != null) {
+                        c.setTransacao(ts.toLocalDateTime().toLocalDate());
+                    }
                     c.setValorCompra(rs.getDouble("Valor_Compra"));
                     c.setEstabelecimento(rs.getString("Estabelecimento"));
                     c.setDescricao(rs.getString("Descricao"));

@@ -10,6 +10,8 @@ import Model.Cliente;
 import Model.Compras;
 import Model.Denuncia;
 import Model.SolicitacaoLimite;
+import com.mycompany.cartaodecredito.config.AppConfig;
+import com.mycompany.cartaodecredito.config.DatabaseConfig;
 import io.javalin.Javalin;
 import io.javalin.http.staticfiles.Location;
 import io.javalin.json.JavalinJackson;
@@ -17,6 +19,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
+import javax.sql.DataSource;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
@@ -24,41 +27,31 @@ import java.util.List;
 
 public class ApiServer {
 
-    public static void iniciar() {
+    public static Javalin iniciar() {
+        AppConfig config = AppConfig.carregar();
+        return iniciar(config);
+    }
+
+    public static Javalin iniciar(AppConfig config) {
+        DataSource dataSource = DatabaseConfig.criarDataSource(config);
+        DatabaseConfig.executarMigracoes(dataSource);
+
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
         mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
 
-        Javalin app = Javalin.create(config -> {
-            config.staticFiles.add("/public", Location.CLASSPATH);
-            config.jsonMapper(new JavalinJackson(mapper, false));
+        Javalin app = Javalin.create(javalinConfig -> {
+            javalinConfig.staticFiles.add("/public", Location.CLASSPATH);
+            javalinConfig.jsonMapper(new JavalinJackson(mapper, false));
         });
 
-        ClienteDao clienteDao = new ClienteDao();
-        CartaoDao cartaoDao = new CartaoDao();
-        CompraDao compraDao = new CompraDao();
-        DenunciaDao denunciaDao = new DenunciaDao();
-        SolicitacaoLimiteDao solicitacaoLimiteDao = new SolicitacaoLimiteDao();
+        ClienteDao clienteDao = new ClienteDao(dataSource);
+        CartaoDao cartaoDao = new CartaoDao(dataSource);
+        CompraDao compraDao = new CompraDao(dataSource);
+        DenunciaDao denunciaDao = new DenunciaDao(dataSource);
+        SolicitacaoLimiteDao solicitacaoLimiteDao = new SolicitacaoLimiteDao(dataSource);
 
-        // Inicializa contas padrão se não existirem
-        if (clienteDao.autenticar("000.000.000-00", "admin123") == null) {
-            Cliente admin = new Cliente();
-            admin.setNome("Administrador VaultBank");
-            admin.setCPF("000.000.000-00");
-            admin.setSenha("admin123");
-            admin.setIsAdmin(true);
-            admin.setSaldo(new java.math.BigDecimal("0.0"));
-            try { clienteDao.CadastrarUsuario(admin); System.out.println("Conta Admin criada."); } catch(Exception e) {}
-        }
-        if (clienteDao.autenticar("123.456.789-00", "senha123") == null) {
-            Cliente user = new Cliente();
-            user.setNome("Usuario Teste");
-            user.setCPF("123.456.789-00");
-            user.setSenha("senha123");
-            user.setIsAdmin(false);
-            user.setSaldo(new java.math.BigDecimal("2000.0"));
-            try { clienteDao.CadastrarUsuario(user); System.out.println("Conta Usuário de teste criada."); } catch(Exception e) {}
-        }
+        criarAdminSeNecessario(clienteDao, config);
 
         app.post("/api/login", ctx -> {
             Map<String, String> body = ctx.bodyAsClass(Map.class);
@@ -93,7 +86,7 @@ public class ApiServer {
             novoCliente.setEstado(body.get("estado"));
             novoCliente.setSenha(body.get("senha"));
             novoCliente.setIsAdmin(false);
-            novoCliente.setSaldo(new java.math.BigDecimal("2000.0"));
+            novoCliente.setSaldo(config.getSaldoInicial());
             
             try {
                 boolean sucesso = clienteDao.CadastrarUsuario(novoCliente);
@@ -245,8 +238,40 @@ public class ApiServer {
             }
         });
 
-        int porta = System.getenv("PORT") != null ? Integer.parseInt(System.getenv("PORT")) : 7071;
+        int porta = config.getPort();
         app.start(porta);
         System.out.println("Servidor Web rodando na porta: " + porta);
+        return app;
+    }
+
+    private static void criarAdminSeNecessario(ClienteDao clienteDao, AppConfig config) {
+        String cpf = config.getAdminCpf();
+        String senha = config.getAdminSenha();
+        if (cpf == null || cpf.isBlank() || senha == null || senha.isBlank()) {
+            return;
+        }
+        if (clienteDao.autenticar(cpf, senha) != null) {
+            return;
+        }
+
+        Cliente admin = new Cliente();
+        admin.setNome("Administrador VaultBank");
+        admin.setCPF(cpf);
+        admin.setRG("-");
+        admin.setEmail("admin@vaultbank.local");
+        admin.setTelefone("-");
+        admin.setDataNascimento(LocalDate.of(2000, 1, 1));
+        admin.setNacionalidade("Brasileira");
+        admin.setCEP("-");
+        admin.setEstado("-");
+        admin.setSenha(senha);
+        admin.setIsAdmin(true);
+        admin.setSaldo(java.math.BigDecimal.ZERO);
+        try {
+            clienteDao.CadastrarUsuario(admin);
+            System.out.println("Conta admin criada.");
+        } catch (Exception e) {
+            System.out.println("Nao foi possivel criar a conta admin: " + e.getMessage());
+        }
     }
 }
