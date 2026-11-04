@@ -1,33 +1,31 @@
-//Inserir/consultar um Cartão
-// DAO - Objeto de Acesso a Dados
 package Dao;
 
-import Connect.ConnectFactory;
 import Model.Cartao;
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.time.LocalDate;
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.ArrayList;
 import java.sql.ResultSet;
 
 public class CartaoDao {
-    private Connection con;
-    
-    public CartaoDao(){
-        this.con = new ConnectFactory().getConnection();
+    private final DataSource dataSource;
+
+    public CartaoDao(DataSource dataSource) {
+        this.dataSource = dataSource;
     }
-    
-    public boolean cadastrarCartao(Cartao c){
+
+    public boolean cadastrarCartao(Cartao c) {
         String sql = "INSERT INTO Cartao (Id_Cliente, Numeros_Cartao, Validade) VALUES (?, ?, ?)";
-        
-        try (PreparedStatement ps = con.prepareStatement(sql)) {
+
+        try (Connection con = dataSource.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, c.getIdCliente());
             ps.setString(2, c.getNumerosCartao());
-            LocalDate data = c.getValidade();
-            ps.setDate(3, java.sql.Date.valueOf(data));
-            
+            ps.setTimestamp(3, Timestamp.valueOf(c.getValidade().atStartOfDay()));
+
             ps.execute();
             return true;
         } catch (SQLException e) {
@@ -39,7 +37,8 @@ public class CartaoDao {
     public List<Cartao> buscarCartoesPorCliente(int idCliente) {
         List<Cartao> cartoes = new ArrayList<>();
         String sql = "SELECT * FROM Cartao WHERE Id_Cliente = ?";
-        try (PreparedStatement ps = con.prepareStatement(sql)) {
+        try (Connection con = dataSource.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, idCliente);
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
@@ -47,7 +46,10 @@ public class CartaoDao {
                     c.setIdCartao(rs.getInt("Id_Cartao"));
                     c.setIdCliente(rs.getInt("Id_Cliente"));
                     c.setNumerosCartao(rs.getString("Numeros_Cartao"));
-                    c.setValidade(rs.getDate("Validade").toLocalDate());
+                    Timestamp val = rs.getTimestamp("Validade");
+                    if (val != null) {
+                        c.setValidade(val.toLocalDateTime().toLocalDate());
+                    }
                     cartoes.add(c);
                 }
             }

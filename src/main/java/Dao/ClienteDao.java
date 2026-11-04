@@ -1,21 +1,21 @@
 package Dao;
 
-import Connect.ConnectFactory;
 import Model.Cliente;
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.ArrayList;
-import java.math.BigDecimal;
 
 public class ClienteDao {
-    private Connection con;
+    private final DataSource dataSource;
 
-    public ClienteDao() {
-        this.con = new ConnectFactory().getConnection();
+    public ClienteDao(DataSource dataSource) {
+        this.dataSource = dataSource;
     }
 
     public boolean CadastrarUsuario(Cliente c) throws Exception {
@@ -23,13 +23,14 @@ public class ClienteDao {
                      "Data_Nascimento, Nacionalidade, CEP, Estado, isAdmin, Senha, Saldo) " +
                      "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-        try (PreparedStatement ps = con.prepareStatement(sql)) {
+        try (Connection con = dataSource.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setString(1, c.getNome());
             ps.setString(2, c.getCPF());
             ps.setString(3, c.getRG());
             ps.setString(4, c.getEmail());
             ps.setString(5, c.getTelefone());
-            ps.setDate(6, java.sql.Date.valueOf(c.getDataNascimento()));
+            ps.setTimestamp(6, Timestamp.valueOf(c.getDataNascimento().atStartOfDay()));
             ps.setString(7, c.getNacionalidade());
             ps.setString(8, c.getCEP());
             ps.setString(9, c.getEstado());
@@ -45,33 +46,35 @@ public class ClienteDao {
     // Autenticação de login por CPF e senha
     public Cliente autenticar(String CPF, String Senha) {
         String sql = "SELECT * FROM Cliente WHERE CPF = ? AND Senha = ?";
-        
-        try (PreparedStatement ps = con.prepareStatement(sql)) {
+
+        try (Connection con = dataSource.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setString(1, CPF);
             ps.setString(2, Senha);
 
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                Cliente c = new Cliente();
-                c.setIdCliente(rs.getInt("Id_Cliente"));
-                c.setNome(rs.getString("Nome"));
-                c.setCPF(rs.getString("CPF"));
-                c.setRG(rs.getString("RG"));
-                c.setEmail(rs.getString("Email"));
-                c.setTelefone(rs.getString("Telefone"));
-                java.sql.Date dataNasc = rs.getDate("Data_Nascimento");
-                if (dataNasc != null) {
-                    c.setDataNascimento(dataNasc.toLocalDate());
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    Cliente c = new Cliente();
+                    c.setIdCliente(rs.getInt("Id_Cliente"));
+                    c.setNome(rs.getString("Nome"));
+                    c.setCPF(rs.getString("CPF"));
+                    c.setRG(rs.getString("RG"));
+                    c.setEmail(rs.getString("Email"));
+                    c.setTelefone(rs.getString("Telefone"));
+                    Timestamp dataNasc = rs.getTimestamp("Data_Nascimento");
+                    if (dataNasc != null) {
+                        c.setDataNascimento(dataNasc.toLocalDateTime().toLocalDate());
+                    }
+                    c.setNacionalidade(rs.getString("Nacionalidade"));
+                    c.setCEP(rs.getString("CEP"));
+                    c.setEstado(rs.getString("Estado"));
+                    c.setIsAdmin(rs.getBoolean("isAdmin"));
+                    c.setSenha(rs.getString("Senha"));
+                    c.setSaldo(rs.getBigDecimal("Saldo"));
+                    return c;
+                } else {
+                    return null;
                 }
-                c.setNacionalidade(rs.getString("Nacionalidade"));
-                c.setCEP(rs.getString("CEP"));
-                c.setEstado(rs.getString("Estado"));
-                c.setIsAdmin(rs.getBoolean("isAdmin"));
-                c.setSenha(rs.getString("Senha"));
-                c.setSaldo(rs.getBigDecimal("Saldo"));
-                return c;
-            } else {
-                return null;
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -82,7 +85,8 @@ public class ClienteDao {
     public List<Cliente> listarClientes() {
         List<Cliente> clientes = new ArrayList<>();
         String sql = "SELECT * FROM Cliente ORDER BY Nome";
-        try (PreparedStatement ps = con.prepareStatement(sql);
+        try (Connection con = dataSource.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
                 Cliente c = new Cliente();
@@ -101,7 +105,8 @@ public class ClienteDao {
 
     public boolean adicionarSaldo(int idCliente, double valorAdicional) {
         String sql = "UPDATE Cliente SET Saldo = Saldo + ? WHERE Id_Cliente = ?";
-        try (PreparedStatement ps = con.prepareStatement(sql)) {
+        try (Connection con = dataSource.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setDouble(1, valorAdicional);
             ps.setInt(2, idCliente);
             int rowsAffected = ps.executeUpdate();
