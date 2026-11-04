@@ -1,4 +1,4 @@
-﻿target/
+target/
 *.class
 *.jar
 dependency-reduced-pom.xml
@@ -7,4 +7,4 @@ nbproject/private/
 .vscode/
 *.log
 .env
-Cartao-de-Credito-Java/
+PLANO-ANTIGRAVITY.md
